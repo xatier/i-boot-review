@@ -74,6 +74,7 @@ run_ram:
 	bl	init_strongarm
 	bl	init_gpio
 	
+    // xatier: oh, ya!
 	//We're alive! turn on the LEDs
 	ldr	r12, =GPIO_BASE
 	ldr	r0, =0x0000000F
@@ -87,6 +88,7 @@ run_rom:
 	bl	init_strongarm
 	bl	init_gpio
 	
+    // xatier: oh, ya!
 	//We're alive! turn on the LEDs
 	ldr	r12, =GPIO_BASE
 	ldr	r0, =0x0000000F
@@ -241,6 +243,8 @@ init_strongarm:
 
 	mov	pc, lr
 
+
+// xatier: initialize the serial port, at baud rate: 115200
 init_serial:
 	ldr	r12, =PPAR
 	ldr	r0, =PPAR_VALUE

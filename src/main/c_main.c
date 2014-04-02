@@ -119,11 +119,15 @@ c_main(void)
 //#ifdef XSCALE
 //	*(volatile unsigned int *)(GPIO_BASE + GPSR0) = 0x10;
 //#endif
-	
+
    //init all the devices we need.
    init_status();
+
+   // xatier: in src/main/start_sa.S
+   // initialize the serial port
    init_serial(SERIAL_BAUD_115200);
 
+   // xatier: print the messages on the screen
 #define LINE_WIDTH (50-5)
    itc_printf("\r\n"
 	      "**************************************************\r\n"
@@ -136,8 +140,16 @@ c_main(void)
 	      VERSION, &spaces[sizeof(spaces)-LINE_WIDTH+sizeof(VERSION)+29-2]
 	     );
 
+   // xatier: in src/libs/base/flash_i128.c
+   // actually do nothing
    init_flash();
+
+   // xatier: in src/libs/net/checksum.c
+   // actually do noting, use a static table crc32_tab[] instead
    init_crc_table();
+
+   // xatier: in src/libs/base/timer_sa.c
+   // set RCNR to zero
    init_timer();
    //inc_led();
 
@@ -169,13 +181,20 @@ c_main(void)
 //   }
 //#endif
 
+   // xatier: in src/libs/base/ethernet_cs8900a.c
+   // initializes the cs8900a ethernet chip
    init_ethernet(status.macaddr);
 
    // Seed the random number generator with as much entropy as we have
+
+   // xatier: in src/libs/base/timer_sa.c
+   // returns RCNR
    srand(get_time_timer() ^ ((status.macaddr[2] << 16) | status.macaddr[1]));
 
    //Bring up the user interface. This will return on a timeout or through user
    //direction. This will not return if the user tells us to boot.
+   // xatier: in src/libs/tools/ui.c
+   // set the serial port ui with a timeout
    init_ui(UI_TIMEOUT, mode_default);
 
    //inc_led();
@@ -183,10 +202,14 @@ c_main(void)
    if(pcmcia(1)==0) {
       bootmem_parse("linux 0xa0008000");
    }
-  
+
+   // xatier: in src/libs/base/os.c
+   // bring the operation system up, acctually a wrapper of another function run_os()
+   // brings the default os up to a bootable state, then boots it
    //Load/decode an os, and start it. This should never return.
    init_os();
 
+   // xatier: fall back operations
    //If init_os does return, drop the user to the prompt.
    init_ui(0, mode_default);
 

@@ -1,0 +1,64 @@
+#!/bin/sh
+#
+# This is the post install script
+# This script is run after the package has been downloaded and unpacked.
+
+IBOOT_IMG=/tmp/@pkgname@_@version@-lite.img
+IBOOT_TEST=$IBOOT_IMG.test
+
+echo "."
+echo "This package overwrites your boot loader - if it fails, you may"
+echo -n "have to update it with a JTAG kit!  Do you wish to proceed? [y/N]"
+read RESP
+RESP=`echo $RESP | sed "s/\([a-zA-Z]\).*/\1/"`
+if test "$RESP" != "y" ; then
+    echo "Aborted on user request"
+    rm $IBOOT_IMG
+    exit 0
+fi
+
+if [ "@processor@" == "SA-1110" ]
+then
+    CPU=StrongARM
+    # Blocksize is actually 256k on the SA-1110 CerfPDA; this may need to change
+    BLOCKSIZE=128k
+fi
+
+if [ "@processor@" == "PXA-250" ]
+then
+    CPU=PXA250
+    BLOCKSIZE=256k
+fi
+
+if [ `cat /proc/cpuinfo | grep $CPU | wc -l` != 1 ]
+then
+    echo "CPU Mismatch! This bootloader is for the @processor@ based"
+    echo "devices! Aborting."
+    rm $IBOOT_IMG
+    exit 0
+fi
+
+if test ! -b /dev/mtdblock0 ; then
+    echo "No device /dev/mtdblock0 (31,0)"
+    exit 1
+fi
+
+if test -f $IBOOT_IMG ; then
+    dd if=$IBOOT_IMG of=/dev/mtdblock0 bs=$BLOCKSIZE conv=notrunc
+else
+    echo "Can't find input binary"
+    exit 1
+fi
+
+FILE_CS=`md5sum $IBOOT_IMG | sed "s/\ *\/.*//g"`
+FILE_SIZE=`wc -c $IBOOT_IMG | sed "s/[[:space:]]*\([0-9]*\).*/\1/"`
+# read back
+dd if=/dev/mtdblock0 of=$IBOOT_TEST ibs=1 count=$FILE_SIZE
+TEST_CS=`md5sum $IBOOT_TEST | sed "s/\ *\/.*//g"`
+rm $IBOOT_TEST 
+if test $FILE_CS != $TEST_CS ; then
+    echo "Write failed somehow - read back does not match!"
+    echo "Left image in $IBOOT_IMG"
+    exit 1
+fi
+rm $IBOOT_IMG

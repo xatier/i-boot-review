@@ -1,0 +1,73 @@
+EEPROM Storage Format
+---------------------
+This section describes the format of the data stored in the configuration 
+EEPROM.
+
+The configuration EEPROM is 16 KB in size (16 kilobytes).
+
+The first 8 bytes of the EEPROM is reserved for versioning information.
+The first 2 bytes should be:
+
+Offset   	Value	
+00		0xEF
+01		0xBE
+
+For compatibility if writing the remaining 6 reserved bytes, zeros should 
+be used.
+
+Immediately following the reserved bytes are Tag/Item pairs.  Each 
+tag/item pair has the following format:
+
+Field			Size in Bytes	
+Tag Length		1 or 2
+Tag Value		0 to 32767
+Item Length		1 or 2
+Item Value		0 to 32767
+CRC			2
+
+Tag/Item pairs follow each other in EEPROM memory with no padding 
+in between.  A tag/item pair with a zero tag length and a zero item length 
+signifies the end of tags in the EEPROM.  On such a tag/item pair the 
+CRC will also be zero.
+
+Tag and Item lengths specify the byte lengths of the values only.  The 
+length fields themselves are not included.
+
+Tag and Item values can be any type of data (ASCII, Unicode, Binary).  
+Typically an application or program will search for particular tag/item 
+pairs by examining the data in the tag part.  The lengths of the tag and 
+item data are unambiguous sizes in bytes, and any program code is able to 
+step over tag/item pairs it does not understand.
+
+A tag length field is either 1 or two bytes.  If the value of the byte is less 
+than 128 (0x00 -> 0x7F), then the length is the value of the byte.  If the 
+value is equal to or greater than 128, the value is masked with 127 (0x7F) 
+and forms the upper byte of a two-byte length value.  The next byte in the 
+EEPROM is the lower byte of the two-byte length.
+
+Here is an example of a single tag/item pair in EEPROM:
+
+EEPROM contents (hex)		Length	
+--------------------------------------
+06 03 06 ...			0x06 bytes (6 decimal)
+84 03 06 ...			0x0403 bytes (1027 decimal)
+
+The CRC at the end of a tag/item pair is a 16-bit CRC computed using
+the 16-bit CRC algorithm known as CRC-CCITT-16 (the same one used by the
+XMODEM-CRC file transfer protocol).  The CRC is computed from the sequential
+contents of the tag length, tag value, item length, and item value.
+
+An example of a complete tag/item pair:
+
+EEPROM contents             Interpretation
+------------------------------------------
+EF BE 00 00 00 00 00 00     EEPROM header
+06                          tag length (6 bytes)
+4D 41 43 41 44 30           tag value (tag "MACAD0")
+06                          item length (6 bytes)
+00 D0 CA F1 05 03           item value (MAC address 00-D0-CA-F1-05-03)
+D4 EC                       CRC value for tag/item pair
+00                          tag length (0 bytes)
+00                          item length (0 bytes)
+00 00                       CRC field for completeness
+** END OF TAG/ITEM PAIRS CASE SATISFIED **

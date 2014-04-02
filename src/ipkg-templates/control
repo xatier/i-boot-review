@@ -1,0 +1,8 @@
+Package: @pkgname@
+Priority: optional
+Version: @version@
+Section: base
+Architecture: arm
+Maintainer: Intrinsyc Support <support@intrinsyc.com>
+Depends: familiar-base, shellutils, fileutils
+Description: Intrinsyc boot loader for the @processor@ @family@@device@

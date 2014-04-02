@@ -1,0 +1,34 @@
+#!/usr/bin/make -f
+#
+# $Id: rules.example,v 1.1 2001/07/26 15:36:36 oku Exp $
+#
+# rules for i-boot-cerf-board-sa1110
+
+# Make sure PACKAGE reflects your package name (in control). If it's
+# different, it'll break.
+PACKAGE=@pkgname@
+# Do not touch this. This points to the "filesystem root" where you'll
+# be putting your files (e.g. $(DESTDIR)/usr to put stuff in /usr, etc.
+DESTDIR=$(HOME)/tmp/$(PACKAGE)
+
+build: build-stamp
+build-stamp:
+# Rules to compile your program go here. You can call the compiler, or
+# you can do a configure, make.
+	touch build-stamp
+
+install: build
+# Rules to install your program go here. You can manually install it (like this)
+# or go and call make install. Please note that you MUST use $(DESTDIR) - 
+# and create your filesystem directory structure from there. Otherwise
+# ipkg will NOT pick it up!
+	rm -rf $(DESTDIR)
+	mkdir -p $(DESTDIR)/tmp
+	cp @pkgname@_@version@-lite.img $(DESTDIR)/tmp
+
+clean:
+# Clean up goes here
+# This is called after making and installing the packages, and after the
+# ipk is made. Use it to clean up after yourself (removing *.o's, calling
+# make clean, etc).
+	rm -f build-stamp

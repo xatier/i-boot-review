@@ -1,0 +1,123 @@
+Intrinsyc Boot Change Notes
+===========================
+
+This document describes the new features and enhancements added to
+Intrinsyc Boot. For the very latest information, please read the
+CHANGE-NOTES file on ftp or web repositories or refer to the on-line
+documentation at http://www.intrinsyc.com
+
+Version 1.7
+  -- Implemented detection of an SMSC91C111 bug that causes some sent packets
+     to be interpreted as received packets; hopefully, this fixes problems
+     some people have found with TFTP transfers failing (bug #916, #1022)
+  -- Reduced ARP timeout and fixed cache in case of no reply
+  -- Fixed ARP to be more robust and accept only correct responses
+  -- Changed bootme command to send proper I-Boot version number
+  -- Added nonvolatile configuration storage in tagged EEPROM format
+     (bug #1013).
+  -- Set clock speed on PXA250 to 200 MHz, the minimum allowed.
+  -- Added exception vectors to reboot CPU if they are hit.
+  -- Moved MSC0 setting code to run out of RAM so that the flash type can
+     be changed.
+  -- Added set speed command (bug #1014).
+  -- Enabled CS8900 detection
+  -- Fixed bug in eraseflash that didn't allow erasing the last block
+  -- Fixed the RAM start entry point to handle a change in CPU modes
+  -- Added jump command
+  -- Allow spaces in download file names by backslash escaping
+
+Version 1.6
+  -- Added support for production PXA250 CerfBoard
+  -- Fixed deep sleep wakeup
+  -- Make a TFTP download failure more obvious
+  -- Support new Linux position independent zImage bootstrap
+  -- Added new r2 parameter when booting Linux
+  -- Improved robustness of XMODEM in presence of poorly written senders
+  -- Corrected help for crc command
+  -- Display two MAC addresses in info command only when two are possible
+  -- Renamed some configure options
+
+Version 1.5
+  -- Added createfis command to pass custom partition layout to Linux
+  -- Fixed problem of I-Boot hanging on SA-1110 when some PCMCIA cards are
+     installed
+  -- CS8900 Ethernet MAC address is now stored in the standard reset
+     configuration block format in EEPROM
+  -- Beep and ignore unsupported control characters in input
+  -- Added background packet processing during idle loops
+  -- Fixed bug that prevented TFTP working between some different subnetworks
+  -- Implemented basic ICMP support so device can be pinged and tracerouted
+  -- Added ping command
+  -- Improved command-line editor to retrieve last command
+  -- Added reboot command
+  -- Added XMODEM option to download command
+  -- Added entry point to run I-Boot from another bootloader directly in RAM
+  -- Added more configuration options to give more control over what happens
+     in the boot process
+  -- Fixed the architecture type number when booting Linux on the PXA250
+  -- Improved handling of flash write errors
+
+Version 1.4
+  -- Added download raw command.
+  -- Added experimental deep sleep mode support.
+  -- Renamed SA targets.
+  -- Made IP stack more resilient to bad and unexpected input.
+  -- Improved DHCP and BOOTP.
+  -- New CRC command to check integrity of flash images.
+  -- Configure system is now much more flexible and allows most configuration
+     to be done on the command-line
+  -- Download and exec commands use default server if none specified
+  -- Help improvements
+  -- Improved command parsing
+  -- Properly set stack pointer on XScale
+  -- Improved command-line editing
+  -- ARP cache fix which doubles TFTP throughput when going through router
+  -- Many fixes to 91C111 Ethernet driver
+  -- Changed 91C111 Ethernet driver to default to half-duplex mode.
+
+Version 1.3
+  -- Stack pointer now correctly located at end of memory for CerfPDA (64M)
+  -- Removed erroneous DHCP attempt message
+  -- CS8900 reset on SA-1110 only now
+  -- Code cleanup, consolidation
+  -- Various fixes for PXA250 devices
+  -- Linux kernel will now be moved automatically to the right place in
+     memory based on the information contained in the zImage
+
+Version 1.2
+  -- Fixed CHANGE-NOTES file
+  -- Added INSTALL document
+  -- Strip the PDA binary
+  -- Added automatic DHCP requests if a network function is used
+     and an IP address has not already been assigned
+  -- Cleaned up code and added more comments
+  -- DEBUG macros added
+  -- Default make target is now "all"
+  -- Now works with automake-1.4
+  -- Allows cross subnet transfers (DHCP/BOOTP requests a gw and subnet)
+  -- Added "set gw" and "set mask" commands
+  -- CerfBoard LEDs show status:
+     0: Device started
+     1: IBoot running from RAM
+     2: Timer stablized
+     3: User control terminated
+     4: OS loaded (about to boot)
+  -- Added CS8900 reset code
+
+Version 1.1
+  -- First release with the new directory structure
+  -- Added DHCP
+  -- Removed partitioning support
+  -- Added CHANGE-NOTES, RELEASE-NOTES, COPYING and updated README
+  -- Moved from CVS to BitKeeper for SCM (http://www.bitkeeper.com)
+  -- Created a library structure
+  -- Changed the autoconf/automake scripts/makefiles to be as simple as
+     possible
+  -- Moved the user documentation to /documentation
+  -- Optimized UDP/IP system for speed increase
+  -- Moved to automake 1.5
+  -- Added entries for XScale
+  -- Added WinCE helper functions (updatece, runce)
+
+Version 1.0
+  -- First release

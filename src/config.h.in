@@ -1,0 +1,27 @@
+/* config.h.in.  Generated automatically from configure.in by autoheader.  */
+
+#undef VERSION
+#undef CS8900A_ETHERNET
+#undef SMSC91C111_ETHERNET
+#undef RAM_SIZE
+#undef XSCALE
+#undef CERF_PDA
+#undef INTERLEAVED
+#undef SECOND_ETHERNET
+#undef FAST_ETHERNET
+#undef FULL_DUPLEX
+#undef SHOW_DOWNLOAD_CRC
+#undef TAGGED_EEPROM
+#undef VERBOSE_STARTUP
+#undef STARTUP_MEMTEST
+#undef DEBUG_LEVEL
+
+/* Define if you have the <dlfcn.h> header file.  */
+#undef HAVE_DLFCN_H
+
+/* Name of package */
+#undef PACKAGE
+
+/* Version number of package */
+#undef VERSION
+

@@ -1,0 +1,565 @@
+I-Boot Command Reference
+Copyright 2001-2002 Intrinsyc Software Inc.
+
+----------------
+NAME
+	boot - Boot an image.
+
+SYNOPSIS
+	boot ["<parameters>"]
+
+DESCRIPTION
+	Attempts to detect and start a WinCE .bin file, or a Linux kernel
+	in flash. The kernel must start in flash block 3.
+
+ARGUMENTS
+	parameters - Parameter string to pass to kernel.
+
+USAGE
+	boot
+
+----------------
+NAME
+	bootme - Announce the device's presence to MS Platform Builder.
+
+SYNOPSIS
+	bootme
+
+DESCRIPTION
+	Broadcasts a MS Platform Builder "bootme" message to announce the
+	device's presence to any instances of such on the subnet.
+
+USAGE
+	bootme
+
+----------------
+NAME
+	bootmem - Boot an image at a specified memory address.
+
+SYNOPSIS
+	bootmem <linux | ce> <base address> ["parameters"]
+
+DESCRIPTION
+	Starts the Linux or CE kernel located at the base address
+	with the specified parameters.
+
+ARGUMENTS
+	base address - Memory address at which kernel is located.
+	parameters - Parameter string to pass to kernel.
+
+USAGE
+	bootmem linux 0x100000
+
+----------------
+NAME
+	copy - Copy data from a RAM source to a RAM destination.
+
+SYNOPSIS
+	copy <destination> <source> <length>
+
+DESCRIPTION
+	Copies data of a specified <length> from a <source>
+	address to a <destination> address. Overlapped <source> and
+	<destination> memory areas are allowed. Non-aligned addresses are
+	allowed.
+
+ARGUMENTS
+	destination - Memory address destination.
+	source - Memory address source.
+	length - Number of bytes to copy.
+
+USAGE
+	copy 0xc0008000 0xc000A000 0x1000
+
+----------------
+NAME
+	crc - Calculate CRC-32 over memory range.
+
+SYNOPSIS
+	crc <start> <length>
+
+DESCRIPTION
+	Calculates the CRC-32 for the memory range from the <start> for
+	<length> addresses. This CRC can be compared with the expected
+	CRC to detect corrupted flash images or corrupted downloads.
+	The CRC is calculated in the same way as in ZIP format archives.
+
+ARGUMENTS
+	start - Base address to calculate.
+	length - Number of bytes to calculate.
+
+USAGE
+	crc 0xc0000000 807593
+
+----------------
+NAME
+	createfis - Create a RedBoot-compatible partition table
+
+SYNOPSIS
+	createfis <length1> [<length2> ...]
+
+DESCRIPTION
+	Creates a partition table in the last block of flash in RedBoot format.
+	The Linux kernel can use this information to set up its MTD partitions.
+	The size arguments are the sizes of each partition in units of flash
+	blocks, in sequential order, starting with I-Boot itself in block 0.
+	createfis should be run before booting the kernel for the first time
+	to avoid the kernel corrupting a flash filesystem by using an incorrect
+	default partition layout.
+
+ARGUMENTS
+	lengthN - Size of the partition, in blocks.
+
+USAGE
+	createfis 1 2 8 116
+
+----------------
+NAME
+	decode - Decode the WinCE image.
+
+SYNOPSIS
+	decode
+
+DESCRIPTION
+	Decodes the Windows CE kernel .bin image in flash and copy it
+	into RAM.
+
+USAGE
+	decode
+
+----------------
+NAME
+	download - Download an image by TFTP or serial.
+
+SYNOPSIS
+	download tftp[:<ip>] <filename> <destination>
+	download tftpd <destination>
+	download serial <destination>
+	download xmodem <destination>
+	download raw <destination> <length>
+
+DESCRIPTION
+	Gets a remote file from a specified source into a local memory
+	address. Use TFTP for Linux and TFTPD for WinCE (Platform Builder or
+	Eshell). In TFTPD mode, a remote TFTP client can send files to
+	port 980.  An exclamation mark means that the TFTP download failed.
+	Use serial to download over the serial port as a uuencoded text
+	file, raw to download over the serial port as a raw binary file,
+	and xmodem to download over the serial port as a raw binary file
+	using the XMODEM-CRC or 1k-XMODEM file transfer protocol.
+
+ARGUMENTS
+	ip - IP address of TFTP server from which to get image.
+	filename - Name of image on TFTP server.
+	destination - Memory address to store image.
+	length - Number of bytes to download.
+
+USAGE
+	download tftp:192.168.1.13 zImage 0xc0008000
+	download serial 0xc0020000
+	download raw 0xc0020000 46476
+
+----------------
+NAME
+	eeclear - Clear the contents of the EEPROM.
+
+SYNOPSIS
+	eeclear
+
+DESCRIPTION
+	Clears the contents of the EEPROM, except for the MAC address(es).
+
+----------------
+NAME
+	eedump - Displays the contents of the EEPROM.
+
+SYNOPSIS
+	eedump
+
+DESCRIPTION
+	Displays the tags stored in the EEPROM and their associated data.
+
+----------------
+NAME
+	eraseflash - Erases flash memory.
+
+SYNOPSIS
+	eraseflash <startblk> [<length>]
+
+DESCRIPTION
+	eraseflash will erase flash memory starting with the specified block.
+	If <length> is not specified, then eraseflash will erase until the
+	end of the flash memory on the device; you will be prompted to confirm
+	before it proceeds.
+
+ARGUMENTS
+	startblk - Flash block to start erasing at.
+	length - Number of blocks to erase.
+
+USAGE
+	eraseflash 3
+
+----------------
+NAME
+	exec - Execute I-Boot script.
+
+SYNOPSIS
+	exec tftp[:<ip>] <filename>
+	exec <address>
+
+DESCRIPTION
+	Executes a script after retrieving it from a TFTP server, if
+	requested.
+
+ARGUMENTS
+	ip - IP address of TFTP server.
+	filename - Script on TFTP server to retrieve and execute.
+	address - Memory address of script.
+
+USAGE
+	exec tftp:192.168.1.13 parttest.txt
+
+----------------
+NAME
+	flash - Write data from RAM into flash memory.
+
+SYNOPSIS
+	flash <destination> <source> <length>
+
+DESCRIPTION
+	flash requires a memory location in flash memory to be specified
+	at <destination> and a memory location in RAM as <source>. <length>
+	specifies how many bytes of data should be written to flash.
+
+ARGUMENTS
+	destination - Flash address.
+	source - RAM address.
+	length - Number of bytes to copy to flash.
+
+USAGE
+	flash 0x2000 0xc0020000 0x20000
+
+----------------
+NAME
+	flashloader - Write data from RAM into flash memory.
+
+SYNOPSIS
+	flashloader <destination> <source> <length>
+
+DESCRIPTION
+	flashloader requires a memory location in flash memory to be specified
+	at <destination> and a memory location in RAM as <source>. <length>
+	specifies how many bytes of data should be written to flash.
+	flashloader is used to write to the first two blocks of flash.
+
+	CAUTION: flashloader overwrites the bootloader block of the
+	flash. Improper use can render the device unusable.
+
+ARGUMENTS
+	destination - Flash address.
+	source - RAM address.
+	length - Number of bytes to copy to flash.
+
+USAGE
+	flash 0x2000 0xc0020000 0x20000
+
+----------------
+NAME
+	flashverify - Write data from RAM into flash memory and verify.
+
+SYNOPSIS
+	flashverify <destination> <source> <length>
+
+DESCRIPTION
+	flashverify requires a memory location in flash memory to be specified
+	at <destination> and a memory location in RAM as <source>. <length>
+	specifies how many bytes of data should be written to flash.
+	Verifies that data has been correctly written.
+
+ARGUMENTS
+	destination - Flash address.
+	source - RAM address.
+	length - Number of bytes to copy to flash.
+
+USAGE
+	flashverify 0x2000 0xc0020000 0x20000
+
+----------------
+NAME
+	getbyte - Read byte(s) at specified address.
+	getword - Read word(s) at specified address.
+	getdword - Read double word(s) at specified address.
+
+SYNOPSIS
+	getbyte <address> [<length>]
+	getword <address> [<length>]
+	getdword <address> [<length>]
+
+DESCRIPTION
+	Reads from the specified <address>. If <length> is specified, a
+	range of addresses will be dumped to the display.
+
+ARGUMENTS
+	address - Memory location to read from.
+	length - Number of values to read.
+
+USAGE
+	getdword 0x80000004
+	getbyte 0xc0002000 0x100
+
+----------------
+NAME
+	help - Show usage for commands.
+
+SYNOPSIS
+	help <command>
+
+DESCRIPTION
+	Shows the usage for I-Boot commands. The list of all the
+	supported commands will be displayed if <command> is not specified.
+
+ARGUMENTS
+	command - User command to show help for.
+
+----------------
+NAME
+	info - Display information about I-Boot.
+
+SYNOPSIS
+	info
+
+DESCRIPTION
+	Displays important information concerning the device.
+
+----------------
+NAME
+	jump - Start running a program in memory.
+
+SYNOPSIS
+	jump <start> [<arg> ...]
+
+DESCRIPTION
+	Jumps to a program loaded somewhere in memory.
+
+ARGUMENTS
+	start - Address of program.
+	arg - Numeric argument passed into program.
+
+USAGE
+	jump 0xc0008000 0 31 0
+
+----------------
+NAME
+	memtest - Test RAM.
+
+SYNOPSIS
+	memtest <start> <end>
+
+DESCRIPTION
+	Tests RAM from the <start> to the <end> address.
+
+ARGUMENTS
+	start - Base address to test.
+	end - Last address to test.
+
+USAGE
+	memtest 0xc0000000 0xc01F8000
+
+----------------
+NAME
+	ping - Determine if a remote host is reachable.
+
+SYNOPSIS
+	ping <ip>
+
+DESCRIPTION
+	Sends an ICMP echo request message to a remote host.  If the host is
+	up and reachable, it should send an echo response message which is
+	displayed when it is received.
+
+ARGUMENTS
+	ip - Valid IP address.
+
+USAGE
+	ping 192.168.1.123
+
+----------------
+NAME
+        reboot - Reboots the machine.
+
+SYNOPSIS
+	reboot
+
+DESCRIPTION
+	Restarts the machine.
+
+----------------
+NAME
+        runce - Downloads and runs a WinCE .bin file.
+
+SYNOPSIS
+	runce
+
+DESCRIPTION
+	Downloads and starts a WinCE .bin file. The .bin file is stored in
+	RAM, and is lost on reboot.
+
+----------------
+NAME
+	set - Change settings of attributes.
+
+SYNOPSIS
+	set [<attribute> [<value>]]
+
+DESCRIPTION
+	Adjusts the settings of an attribute. To get a list of all the
+	settable attributes, run set without any arguments. To get the current
+	value for a particular attribute, type
+		set <attribute>
+
+	To get help for a particular attribute, type
+		help set <attribute>
+
+ARGUMENTS
+	attribute - Setting to change.
+	value - New value to set attribute to.
+
+----------------
+NAME
+	set gw - Set the gateway address used by the device.
+
+SYNOPSIS
+	set gw <ip>
+
+DESCRIPTION
+	Sets the network gateway address used by the device.
+
+ARGUMENTS
+	ip - Gateway IP address.
+
+USAGE
+	set gw 192.168.1.1
+
+----------------
+NAME
+	set ip - Set the static IP address of the device.
+
+SYNOPSIS
+	set ip [<ip> | dhcp | bootp]
+
+DESCRIPTION
+	Sets the static IP address for the device, or obtains one via DHCP
+	or BOOTP.
+
+ARGUMENTS
+	ip - Valid IP address.
+
+USAGE
+	set ip 192.168.1.123
+
+----------------
+NAME
+	set mac - Set the MAC address of the Ethernet device.
+
+SYNOPSIS
+	set mac [<mac> [<num>]]
+
+DESCRIPTION
+	Sets the MAC address of the Ethernet device; you will be prompted
+	to confirm before it proceeds. This command will normally never
+	be needed.
+
+	CAUTION: You can cause network problems if you set an invalid
+	MAC address.
+
+ARGUMENTS
+	mac - MAC address
+	num - 0 or 1, if the hardware supports two Ethernet ports
+
+USAGE
+	set mac 000103123456
+
+----------------
+NAME
+	set mask - Set the subnet mask of the device.
+
+SYNOPSIS
+	set mask [<mask>]
+
+DESCRIPTION
+	Sets the subnet mask of the device.
+
+ARGUMENTS
+	mask - Subnet mask.
+
+USAGE
+	set mask 255.255.255.0
+
+----------------
+NAME
+	set server - Set the server address.
+
+SYNOPSIS
+	set server [<ip>]
+
+DESCRIPTION
+	Sets the default server address used by the device.
+
+ARGUMENTS
+	ip - Server IP address.
+
+USAGE
+	set server 192.168.0.1
+
+----------------
+NAME
+	set speed - Set the CPU speed.
+
+SYNOPSIS
+	set speed <speed>
+
+DESCRIPTION
+	Sets the CPU's clock frequency to the given speed in Mhz. If the
+	speed given not supported, the next lowest allowable speed is
+	set instead.
+
+ARGUMENTS
+	speed - CPU clock speed in MHz.
+
+USAGE
+	set speed 200
+
+----------------
+NAME
+	setbyte - Write byte(s) at specified address.
+	setword - Write word(s) at specified address.
+	setdword - Write double word(s) at specified address.
+
+SYNOPSIS
+	setbyte <address> <value> [<length>]
+	setword <address> <value> [<length>]
+	setdword <address> <value> [<length>]
+
+DESCRIPTION
+	Write specified <value> of the specified size at the
+	<address>. If <length> is specified, then the
+	specified <value> will be filled to the specified <length>.
+
+ARGUMENTS
+	address - Memory location to read from.
+	value - Byte, word or double word value.
+	length - Number of values to read.
+
+USAGE
+	setdword 0xc0030000 0xffff 0x100
+
+----------------
+NAME
+	updatece - Downloads and flashes a WinCE .bin file.
+
+SYNOPSIS
+	updatece
+
+DESCRIPTION
+	Downloads and flashes a WinCE .bin file. The .bin file can
+	be started with the boot command.

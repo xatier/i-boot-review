@@ -1,0 +1,24 @@
+Flash Layout
+************
+
+This document describes the flash layout of the various Intrinsyc Cerf 
+devices.
+
+CerfPDA (SA-1110 and PXA250), CerfBoard/CerfCube (PXA250)
+  - Bootloader = 0x0 - 0x3FFFF      Flash Block 0
+  - Bootloader Reserved = 0x40000 - 0xBFFFF Flash Blocks 1 and 2
+  - Kernel     = 0xC0000 - 0x1BFFFF Flash Blocks 3 - 10 (inclusive)
+  - FS         = 0x1C0000 - end*    Flash blocks 11-127* (inclusive)
+  - FIS        = 0x1fc0000 - end    Flash block 127 (only if createfis is used)
+
+CerfBoard/CerfCube (SA-1110)
+  - Bootloader = 0x0 - 0x1FFFF      Flash Block 0
+  - Bootloader Reserved = 0x20000 - 0x5FFFF Flash Blocks 1 and 2.
+  - Kernel     = 0x60000 - 0x15FFFF Flash Blocks 3 - 6  (inclusive)
+  - FS         = 0x160000 - end*    Flash Blocks 7 - 127* (inclusive)
+  - FIS        = 0xfe0000 - end     Flash block 127 (only if createfis is used)
+
+* If a RedBoot partition table is created by the createfis command, then the
+filesystem must end one flash block before the end of the device.  Be sure
+to enable RedBoot support in the MTD driver of your kernel if you use this
+feature.

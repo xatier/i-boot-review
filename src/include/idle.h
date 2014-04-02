@@ -1,0 +1,27 @@
+//////////////////////////////////////////////////////////////////////////////////
+// Copyright(c) 2002 Intrinsyc Software Inc. All rights reserved.
+//
+// Module name:
+//
+//      idle.h
+//
+// Description:
+//
+//      Functions to execute when the bootloader is idle.
+//
+// Author:
+//
+//      Dan Fandrich
+//
+// Created:
+//
+//      June 2002
+//
+////////////////////////////////////////////////////////////////////////////////
+
+#ifndef IDLE_H
+#define IDLE_H
+
+void idle(void);
+
+#endif //IDLE_H

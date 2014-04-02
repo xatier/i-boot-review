@@ -1,0 +1,129 @@
+dnl Process this file with autoconf to produce a configure script.
+AC_INIT(Makefile.am)
+AM_INIT_AUTOMAKE(i-boot-lite, $VERSION)
+
+# Set the flags we want to use for the project here
+# Set them before AC_PROG_CC so it doesn't give us -g
+CFLAGS="-O2 -mcpu=strongarm110 -mapcs-32 -fomit-frame-pointer -fPIC -fno-builtin -Wall -Wshadow -Wpointer-arith -Wwrite-strings -Wstrict-prototypes -Wmissing-declarations -Wmissing-prototypes -Wredundant-decls -Wnested-externs -Winline $CFLAGS"
+LDFLAGS="-L$HOME/intrinsyc/lib -nostdlib -fPIC -fno-builtin -fomit-frame-pointer -static $LDFLAGS"
+
+OCFLAGS="-O binary -R .note -R .comment -S"
+AC_SUBST(OCFLAGS)
+
+dnl Checks for programs.
+AC_PROG_CC
+AC_PROG_RANLIB
+AC_LIBTOOL_DLOPEN
+AM_PROG_LIBTOOL
+AC_CHECK_PROGS(OBJCOPY, arm-linux-objcopy objcopy, echo)
+
+AC_ENABLE_SHARED(yes)
+AC_ENABLE_STATIC(no)
+
+LOCAL_INC_DIR="\$(top_srcdir)/include"
+KERNEL_INC_DIR="$HOME/intrinsyc/arm-linux/sys-include/"
+
+AC_SUBST(LOCAL_INC_DIR)
+AC_SUBST(KERNEL_INC_DIR)
+
+PACKAGE=IBoot
+
+# Hardware configuration options
+
+AC_ARG_WITH(ram,
+        [  --with-ram=SIZE         Specify the amount of RAM in MB],
+        AC_DEFINE_UNQUOTED(RAM_SIZE,$withval),
+        AC_MSG_ERROR([Must specify amount of RAM with --with-ram])
+)
+
+AC_ARG_ENABLE(cs8900a,
+        [  --enable-cs8900a        Use the Crystal CS8900A Ethernet driver],
+        [CS8900A_ETHERNET=1
+        AC_DEFINE(CS8900A_ETHERNET)]
+)
+AM_CONDITIONAL(CS8900A_ETHERNET, test x$CS8900A_ETHERNET = x1 )
+
+AC_ARG_ENABLE(smsc91c111,
+        [  --enable-smsc91c111     Use the SMSC 91C111 Ethernet driver],
+        [SMSC91C111_ETHERNET=1
+        AC_DEFINE(SMSC91C111_ETHERNET)]
+)
+AM_CONDITIONAL(SMSC91C111_ETHERNET, test x$SMSC91C111_ETHERNET = x1 )
+
+AC_ARG_WITH(ldscript,
+        [  --with-ldscript=SCRIPT  Specify the ld link script & therefore memory map],
+        [LDSCRIPT="$withval"
+        AC_SUBST(LDSCRIPT)],
+        AC_MSG_ERROR([Must specify ld script to use with --with-ldscript])
+)
+
+AC_ARG_ENABLE(xscale,
+        [  --enable-xscale         Target board has an XScale ARM CPU (otherwise SA11X0)],
+        [XSCALE=1
+        AC_DEFINE(XSCALE)]
+)
+AM_CONDITIONAL(XSCALE, test x$XSCALE = x1 )
+
+AC_ARG_ENABLE(pda,
+        [  --enable-pda            Target board is like a CerfPDA],
+        AC_DEFINE(CERF_PDA)
+)
+
+AC_ARG_ENABLE(interleaved,
+        [  --enable-interleaved    Target board has 32-bit interleaved flash],
+        AC_DEFINE(INTERLEAVED)
+)
+
+AC_ARG_ENABLE(ethernet2,
+        [  --enable-ethernet2      Use the second Ethernet port],
+        AC_DEFINE(SECOND_ETHERNET)
+)
+
+AC_ARG_ENABLE(fast-ethernet,
+        [  --enable-fast-ethernet  Configure the Ethernet port for 100 Mbps],
+        AC_DEFINE(FAST_ETHERNET)
+)
+
+AC_ARG_ENABLE(full-duplex,
+        [  --enable-full-duplex    Configure the Ethernet port for full duplex],
+        AC_DEFINE(FULL_DUPLEX)
+)
+
+AC_ARG_ENABLE(crc-display,
+        [  --enable-crc-display    Display CRC-32 after downloading files],
+        AC_DEFINE(SHOW_DOWNLOAD_CRC)
+)
+
+AC_ARG_ENABLE(tagged-eeprom,
+        [  --enable-tagged-eeprom  Store nonvolatile configuration in tagged format],
+        [TAGGED_EEPROM=1
+        AC_DEFINE(TAGGED_EEPROM)]
+)
+AM_CONDITIONAL(TAGGED_EEPROM, test x$TAGGED_EEPROM = x1 )
+
+AC_ARG_ENABLE(verbose-startup,
+        [  --enable-verbose-startup Display debugging information at startup],
+        AC_DEFINE(VERBOSE_STARTUP)
+)
+
+AC_ARG_ENABLE(memtest,
+        [  --enable-memtest        Run memory test at startup],
+        AC_DEFINE(STARTUP_MEMTEST)
+)
+
+AC_ARG_ENABLE(debugging,
+        [  --enable-debugging[=LEVEL] Enable debugging at the given level (0..5)],
+        if test "$enableval" = yes; then enableval=5; fi
+        AC_DEFINE_UNQUOTED(DEBUG_LEVEL,$enableval)
+)
+
+AC_OUTPUT(
+Makefile
+include/Makefile
+main/Makefile
+libs/Makefile
+libs/base/Makefile
+libs/net/Makefile
+libs/tools/Makefile
+)
+

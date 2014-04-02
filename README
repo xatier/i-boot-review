@@ -1,0 +1,148 @@
+Intrinsyc I-Boot 1.7
+====================
+
+The contents of this CD-ROM are Copyright (C) 2000-2002 Intrinsyc
+Software and others.  Please see the individual copyright notices in each
+source package for distribution terms.
+
+============================================================================
+INTRODUCTION
+
+I-Boot is the bootloader for Intrinsyc hardware platforms.  It allows
+an embedded device developer to download and run Linux or Windows CE
+kernels. There is a command-line interface to allow the developer to
+coordinate the downloading with the development computer.
+
+============================================================================
+SYSTEM REQUIREMENTS
+
+The hardware device should have:
+    - a serial cable connecting it to a port on your development PC
+    - an Ethernet connection to a LAN so that it is accessible from
+      the development PC
+    - I-Boot pre-loaded or loaded using JTAG as needed
+
+The development PC should have:
+    - a terminal program to communicate the with serial port of the
+      hardware device (Hyperterminal for Windows developers, minicom or
+      c-kermit for Linux developers). The terminal settings should be 38400
+      baud, 8 bits, no flow control, stop bits at 1
+    - TFTP server
+
+============================================================================
+COMMAND MODE
+
+After properly connecting the hardware device and the development computer,
+bring up the terminal program on the development PC and power up the device.
+On the terminal program, you will be prompted to interrupt the countdown to
+get to the I-Boot interactive mode.
+
+	IBoot>
+
+At the prompt, to get a list of commands type:
+	IBoot> help
+	
+To get information on a particular command, type:
+	IBoot> help <command>
+
+For example, to get help on the download command, type:
+	IBoot> help download
+
+See the USAGE file for a entire list of all the commands supported by I-Boot.
+
+Some control characters have special functions:
+
+        DEL (delete)   delete the previous character
+        ^H (backspace) delete the previous character
+        ^P             recall the previously-entered line (only works if it
+                       is the first key pressed on a line)
+        ^U             delete the entire line
+
+All other control characters are ignored and cause a BEL character to be sent
+which normally causes the terminal to beep.
+
+============================================================================
+LINUX DEVELOPMENT
+
+To create a Linux system, enter the following commands.  Substitute
+the name of your files for those within the <brackets>, and substitute the
+TFTP server's IP address for x.x.x.x.
+
+For SA-1110 CerfPod, CerfCube or CerfBoard:
+
+	IBoot> download tftp:x.x.x.x <zImage> 0xc0000000
+
+        IBoot> flashverify 0x60000 0xc0000000 0x100000
+
+        IBoot> download tftp:x.x.x.x <jffs filesystem> 0xc0000000
+
+        IBoot> flashverify 0x160000 0xc0000000 <displayed jffs filesystem size>
+
+        IBoot> boot
+
+For SA-1110 CerfPDA:
+
+        IBoot> download tftp:x.x.x.x <zImage> 0xc0000000
+
+        IBoot> flashverify 0xc0000 0xc0000000 0x100000
+
+        IBoot> download tftp:x.x.x.x <jffs filesystem> 0xc0000000
+
+        IBoot> flashverify 0x1c0000 0xc0000000 <displayed jffs filesystem size>
+
+        IBoot> boot
+
+For PXA250 CerfBoard or CerfPDA:
+
+        IBoot> download tftp:x.x.x.x <zImage> 0xa0000000
+
+        IBoot> flashverify 0xc0000 0xa0000000 0x100000
+
+        IBoot> download tftp:x.x.x.x <jffs filesystem> 0xa0000000
+
+        IBoot> flashverify 0x1c0000 0xa0000000 <displayed jffs filesystem size>
+
+        IBoot> boot
+
+This will download and flash the Linux system.
+
+============================================================================
+WinCE DEVELOPMENT
+
+To run a WinCE .bin file, prepare Platform Builder to upload the .bin file,
+and type:
+
+	IBoot> runce
+
+To flash the .bin file, prepare Platform Builder to upload the .bin file, and
+type:
+
+	IBoot> updatece
+
+============================================================================
+BOOTLOADER UPGRADE
+
+It is possible to upgrade I-Boot to a newer version using an older version
+of the bootloader.  If you decide to do so, be extremely careful that you
+enter the commands correctly and use the correct image, because a problem
+upgrading the bootloader can render your device unusable and will require
+returning it to the manufacturer for repair.
+
+For SA-1110 CerfPod, CerfCube, CerfBoard or CerfPDA:
+
+	IBoot> download tftp:x.x.x.x <i-boot-image> 0xc0000000
+
+        IBoot> flashloader 0 0xc0000000 0x20000
+
+        IBoot> reboot
+
+For PXA250 CerfBoard or CerfPDA:
+
+	IBoot> download tftp:x.x.x.x <i-boot-image> 0xa0000000
+
+        IBoot> flashloader 0 0xa0000000 0x40000
+
+        IBoot> reboot
+
+The reboot command is not found in older versions of I-Boot.  You can simply
+power down then power up your device instead.

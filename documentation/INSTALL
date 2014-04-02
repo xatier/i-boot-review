@@ -1,0 +1,52 @@
+Intrinsyc-Boot Installation Instructions
+----------------------------------------
+
+To build I-Boot, set the following environment variables:
+
+   PATH="$PATH":<path to Intrinsyc-Toolchain>
+
+cd into intrinsyc-boot-lite and type:
+
+   make
+
+or:
+
+   make i-boot-cerf-T-P
+
+where P is the processor and T is the target you want.
+
+The following binaries will be created in intrinsyc-boot-lite/i-boot-lite
+
+   * i-boot-cerf-board-sa1110_1.X-lite.img  - I-Boot for SA CerfCube/CerfPod
+   * i-boot-cerf-pda-sa1110_1.X-lite.img    - I-Boot for SA CerfPDA
+   * i-boot-cerf-board-pxa250_1.X-lite.img  - I-Boot for XScale CerfBoard
+   * i-boot-cerf-pda-pxa250_1.X-lite.img    - I-Boot for XScale CerfPDA
+
+In order to create I-Boot for a new hardware platform, edit the Makefile
+in the package root directory.  Follow the examples there and add a new
+entry with a configure line with the correct options for your board.
+The following configure options are available:
+
+  --with-ram=SIZE         Specify the amount of RAM in MB.
+  --with-ldscript=SCRIPT  Specify the ld link script & therefore memory map.
+                          You may need to add a new ld script file in the
+                          src/ldscripts directory if the new hardware is
+                          sufficiently different from an older one.
+  --enable-xscale         Target board has an XScale ARM CPU (otherwise SA11X0)
+  --enable-pda            Target board is like a CerfPDA.  This configures
+                          certain aspects of the source for the differences
+                          in the PDA boards.
+  --enable-interleaved    Target board has 32-bit interleaved flash, otherwise
+                          it is assumed to have 16-bit flash.
+  --enable-cs8900a        Use the Crystal CS8900A Ethernet driver.
+  --enable-smsc91c111     Use the SMSC 91C111 Ethernet driver.
+  --enable-tagged-eeprom  Store nonvolatile configuration in tagged format
+  --enable-ethernet2      Use the second Ethernet port if the board has more
+                          than one.
+  --enable-fast-ethernet  Configure the Ethernet port for 100 Mbps operation.
+  --enable-full-duplex    Configure the Ethernet port for full duplex operation
+                          (requires a network switch or crossover cable).
+  --enable-crc-display    Display CRC-32 after downloading files.
+  --enable-verbose-startup Display debugging information at startup
+  --enable-memtest        Run RAM test at startup
+  --enable-debugging[=LEVEL] Enable debugging at the given level (0..5)

@@ -1,0 +1,48 @@
+Package: i-boot-cerf-board-pxa250
+Priority: optional
+Version: 1.7
+Section: base
+Architecture: arm
+Maintainer: Intrinsyc Support <support@intrinsyc.com>
+Depends: familiar-base, shellutils, fileutils
+Filename: ./i-boot-cerf-board-pxa250_1.7_arm.ipk
+Size: 33643
+MD5Sum: 0a67ba11b7a69fc0da8022b043d149d0
+Description: Intrinsyc boot loader for the PXA-250 cerfboard
+
+Package: i-boot-cerf-board-sa1110
+Priority: optional
+Version: 1.7
+Section: base
+Architecture: arm
+Maintainer: Intrinsyc Support <support@intrinsyc.com>
+Depends: familiar-base, shellutils, fileutils
+Filename: ./i-boot-cerf-board-sa1110_1.7_arm.ipk
+Size: 28156
+MD5Sum: 5817e959577bbb9bb6a99d73c3bbd708
+Description: Intrinsyc boot loader for the SA-1110 cerfboard
+
+Package: i-boot-cerf-pda-pxa250
+Priority: optional
+Version: 1.7
+Section: base
+Architecture: arm
+Maintainer: Intrinsyc Support <support@intrinsyc.com>
+Depends: familiar-base, shellutils, fileutils
+Filename: ./i-boot-cerf-pda-pxa250_1.7_arm.ipk
+Size: 28889
+MD5Sum: 369fca50c96db378a0e44bc024590f3a
+Description: Intrinsyc boot loader for the PXA-250 cerfpda
+
+Package: i-boot-cerf-pda-sa1110
+Priority: optional
+Version: 1.7
+Section: base
+Architecture: arm
+Maintainer: Intrinsyc Support <support@intrinsyc.com>
+Depends: familiar-base, shellutils, fileutils
+Filename: ./i-boot-cerf-pda-sa1110_1.7_arm.ipk
+Size: 28145
+MD5Sum: 132fcaf314c987d9d14df3be20f50534
+Description: Intrinsyc boot loader for the SA-1110 cerfpda
+

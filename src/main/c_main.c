@@ -199,7 +199,24 @@ c_main(void)
 
    //inc_led();
 
+   // xatier: in src/libs/base/pcmcia.c
+   // an I/O routines/driver with pcmica interface
+   // pcmica(i)
+   //
+   //   i -> 1 insert a pcmcia card, try to find the `kernel` and `ramdisk.gz`
+   //          assume the file system is formatted in FAT32
+   //
+   //   i -> 0 eject a pcmcia card
+   //
+   //   data structures are defined in src/include/pcmcia.h
+   //   in src/libs/base/pcmcia.c, also defined some functions for IDE and VFAT
+   //
    if(pcmcia(1)==0) {
+      // xatier: in src/libs/tools/parser.c
+      // parse the kernel type and bootup address
+      // invokes boot_linux_kernel() in src/libs/base/os.c
+      // the kernel starting physical address is 0xa0008000
+      // start the linux kernel here
       bootmem_parse("linux 0xa0008000");
    }
 

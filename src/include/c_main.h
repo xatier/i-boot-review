@@ -53,9 +53,9 @@
 #define LINKADDR_END_FLASH	(KERNEL_FLASH_START+LINKADDR_END_OFFSET)
 
 //
-// The ram start has to match the ZTEXTADDR which is defined in the 
+// The ram start has to match the ZTEXTADDR which is defined in the
 // the Linux kernel in arch/arm/boot/Makefile.
-//  
+//
 #define KERNEL_RAM_START	(mem_base_platform() + 0x8000)
 #define KERNEL_USE_DEFAULT_ADDR	0
 
@@ -108,5 +108,6 @@ typedef struct {
 extern iboot_status status;
 extern const char copyright[];
 
+char kname[15];
 
 #endif //C_MAIN_H

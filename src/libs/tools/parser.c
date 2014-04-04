@@ -54,6 +54,7 @@
 #include <pcmcia.h>
 
 int boot_parse(char const * arg);
+int bootk_parse(char const *arg);
 int bootme_parse(char const * arg);
 int bootmem_parse(char const * arg);
 int jump_parse(char const * arg);
@@ -95,43 +96,44 @@ command_def command_set[] =
 {
    // command       function_name       min. # parameters
    { "boot",        boot_parse,         0 },
+   { "bootk",       bootk_parse,        1 },
    { "bootme",      bootme_parse,       0 },
-   { "bootmem",     bootmem_parse,      2 }, 
-   { "copy",        copy_parse,         3 }, 
-   { "crc",         crc_parse,          2 }, 
-   { "createfis",   createfis_parse,    1 }, 
-   { "decode",      decode_parse,       0 }, 
-   { "download",    download_parse,     2 }, 
+   { "bootmem",     bootmem_parse,      2 },
+   { "copy",        copy_parse,         3 },
+   { "crc",         crc_parse,          2 },
+   { "createfis",   createfis_parse,    1 },
+   { "decode",      decode_parse,       0 },
+   { "download",    download_parse,     2 },
 #ifdef TAGGED_EEPROM
-   { "eeclear",     eeclear_parse,      0 }, 
-   { "eedump",      eedump_parse,       0 }, 
+   { "eeclear",     eeclear_parse,      0 },
+   { "eedump",      eedump_parse,       0 },
 #endif // TAGGED_EEPROM
-   { "eraseflash",  eraseflash_parse,   1 }, 
-   { "exec",        exec_parse,         1 }, 
-   { "flash",       flash_parse,        3 }, 
-   { "flashloader", flashloader_parse,  3 }, 
-   { "flashverify", flashverify_parse,  3 }, 
-   { "getbyte",     getbyte_parse,      1 }, 
-   { "getword",     getword_parse,      1 }, 
-   { "getdword",    getdword_parse,     1 }, 
-   { "help",        help_parse,         0 }, 
-   { "info",        info_parse,         0 }, 
-   { "jump",        jump_parse,         1 }, 
-   { "memtest",     memtest_parse,      2 }, 
-   { "ping",        ping_parse,         1 }, 
+   { "eraseflash",  eraseflash_parse,   1 },
+   { "exec",        exec_parse,         1 },
+   { "flash",       flash_parse,        3 },
+   { "flashloader", flashloader_parse,  3 },
+   { "flashverify", flashverify_parse,  3 },
+   { "getbyte",     getbyte_parse,      1 },
+   { "getword",     getword_parse,      1 },
+   { "getdword",    getdword_parse,     1 },
+   { "help",        help_parse,         0 },
+   { "info",        info_parse,         0 },
+   { "jump",        jump_parse,         1 },
+   { "memtest",     memtest_parse,      2 },
+   { "ping",        ping_parse,         1 },
    { "pcmcia",		pcmcia_parse,		1 },
-   { "reboot",      reboot_parse,       0 }, 
-   { "runce",       runce_parse,        0 }, 
-   { "setbyte",     setbyte_parse,      2 }, 
-   { "setword",     setword_parse,      2 }, 
-   { "setdword",    setdword_parse,     2 }, 
-   { "set",         set_parse,          0 }, 
-   { "set gw",      set_gw_parse,       1 }, 
-   { "set ip",      set_ip_parse,       1 }, 
-   { "set mac",     set_mac_parse,      1 }, 
-   { "set mask",    set_mask_parse,     1 }, 
-   { "set server",  set_server_parse,   1 }, 
-   { "set speed",   set_speed_parse,    2 }, 
+   { "reboot",      reboot_parse,       0 },
+   { "runce",       runce_parse,        0 },
+   { "setbyte",     setbyte_parse,      2 },
+   { "setword",     setword_parse,      2 },
+   { "setdword",    setdword_parse,     2 },
+   { "set",         set_parse,          0 },
+   { "set gw",      set_gw_parse,       1 },
+   { "set ip",      set_ip_parse,       1 },
+   { "set mac",     set_mac_parse,      1 },
+   { "set mask",    set_mask_parse,     1 },
+   { "set server",  set_server_parse,   1 },
+   { "set speed",   set_speed_parse,    2 },
    { "updatece",    updatece_parse,     0 },
 };
 
@@ -428,7 +430,7 @@ download_parse(char const *arg)
 
    switch(dl_type)
    {
-      case raw: 
+      case raw:
       {
          if(!(get_number_parse(arg, (u32 *)&len)))
          {
@@ -443,12 +445,12 @@ download_parse(char const *arg)
          }
          break;
       }
-      case serial: 
+      case serial:
       {
          len = uudecode(dest);
          break;
       }
-      case xmodem: 
+      case xmodem:
       {
          itc_printf("Start upload procedure using Xmodem-CRC Protocol.\r\n");
          itc_printf("(Press ESC to cancel.)\r\n");
@@ -586,7 +588,7 @@ int
 flashverify_parse(char const *arg)
 {
    int retval;
-   
+
    retval = flash_parse(arg);
 
    if(retval)
@@ -612,7 +614,7 @@ flashverify_parse(char const *arg)
 
    return 0;
 }
-      
+
 ////////////////////////////////////////////////////////////////////////////////
 // flashloader_parse
 // PURPOSE: Parses a flash command and writes to flash accordingly.
@@ -626,7 +628,7 @@ flashloader_parse(char const *arg)
    u32 *dest = (u32 *)(flash_block_size_platform());
    u32 *src = 0;
    int buflen = 0;
- 
+
    if(get_number_parse(arg, (u32 *)&dest))
       arg = next_token(arg);
    else
@@ -634,7 +636,7 @@ flashloader_parse(char const *arg)
       error_print(PARSE_INVALID_ARG_ERROR);
       return 0;
    }
- 
+
    if(get_number_parse(arg, (u32 *)&src))
       arg = next_token(arg);
    else
@@ -642,25 +644,25 @@ flashloader_parse(char const *arg)
       error_print(PARSE_INVALID_ARG_ERROR);
       return 0;
    }
- 
+
    if(!get_number_parse(arg, (u32 *)&buflen))
    {
       error_print(PARSE_INVALID_ARG_ERROR);
       return 0;
    }
- 
+
    if((u32)dest % sizeof(u32))
    {
       error_print(PARSE_ALIGN_ERROR);
       return 0;
    }
- 
+
    if((u32)src % sizeof(u32))
    {
       error_print(PARSE_ALIGN_ERROR);
       return 0;
    }
- 
+
   if((u32)src < PLATFORM_MEMORY_BASE ||
      (u32)src >= PLATFORM_MEMORY_MAX ||
      (u32)dest < PLATFORM_FLASH_BASE ||
@@ -670,7 +672,7 @@ flashloader_parse(char const *arg)
       error_print(PARSE_RANGE_ERROR);
       return 0;
    }
- 
+
    itc_printf("Flashing: ");
    return block_write_flash(dest, src, buflen, FLASH_BOOT);
 }
@@ -850,6 +852,20 @@ boot_parse(char const *arg)
    return 0;
 }
 
+int
+bootk_parse(char const *arg)
+{
+   int i;
+
+   itc_strcpy(kname,arg);
+
+   if(pcmcia(1)==0) {
+      bootmem_parse("linux 0xa0008000");
+   }
+
+   return 0;
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 // decode_parse
 // PURPOSE: Parses a decode command and decodes into memory appropriately. Only
@@ -864,7 +880,7 @@ decode_parse(char const *arg)
    message_print(LOADING_CE_MESSAGE);
    status.CEKernel = cedecode((u8 *)CE_RAM_BASE, (u8 *)CE_TEMP_RAM);
    status.os = CE;
-   
+
    return (int)status.CEKernel;
 }
 
@@ -1135,7 +1151,7 @@ getword_parse(char const *arg)
 {
    u16 *address;
    u32 length;
- 
+
    if(!(arg = get_number_parse(arg, (u32 *)&address)))
    {
       error_print(PARSE_INVALID_ARG_ERROR);
@@ -1145,7 +1161,7 @@ getword_parse(char const *arg)
    {
       length = 1;
    }
- 
+
    print_words(address, length);
 
    return 1;
@@ -1162,7 +1178,7 @@ getdword_parse(char const *arg)
 {
    u32 *address;
    u32 length;
- 
+
    if(!(arg = get_number_parse(arg, (u32 *)&address)))
    {
       error_print(PARSE_INVALID_ARG_ERROR);
@@ -1172,7 +1188,7 @@ getdword_parse(char const *arg)
    {
       length = 1;
    }
- 
+
    print_dwords(address, length);
 
    return 1;
@@ -1190,7 +1206,7 @@ setbyte_parse(char const *arg)
    u8 *address;
    u32 value;
    int length;
- 
+
    if(!get_number_parse(arg, (u32 *)&address))
    {
       error_print(PARSE_INVALID_ARG_ERROR);
@@ -1210,7 +1226,7 @@ setbyte_parse(char const *arg)
       length = 1;
    }
 
-   memset8(address, (u8)value, length);  
+   memset8(address, (u8)value, length);
 
    return 1;
 }
@@ -1227,7 +1243,7 @@ setword_parse(char const *arg)
    u16 *address;
    u32 value;
    int length;
- 
+
    if(!(get_number_parse(arg, (u32 *)&address)))
    {
       error_print(PARSE_INVALID_ARG_ERROR);
@@ -1252,7 +1268,7 @@ setword_parse(char const *arg)
       error_print(PARSE_ALIGN_ERROR);
       return 0;
    }
- 
+
    memset16(address, (u16)value, length);
 
    return 1;
@@ -1270,7 +1286,7 @@ setdword_parse(char const *arg)
    u32 *address;
    u32 value;
    int length;
- 
+
    if(!(get_number_parse(arg, (u32 *)&address)))
    {
       error_print(PARSE_INVALID_ARG_ERROR);
@@ -1295,7 +1311,7 @@ setdword_parse(char const *arg)
       error_print(PARSE_ALIGN_ERROR);
       return 0;
    }
- 
+
    memset32(address, value, length);
 
    return 1;
@@ -1338,7 +1354,7 @@ exec_parse(char const *arg)
          error_print(PARSE_INVALID_IP_ERROR);
          return 0;
       }
- 
+
       if(!(get_filename_parse(arg, filename, sizeof(filename))))
       {
          error_print(PARSE_INVALID_ARG_ERROR);
@@ -1355,7 +1371,7 @@ exec_parse(char const *arg)
 	    return 0;
 	 }
       }
-      
+
       size = tftpget(arg, (u8 *)buf);
 
       if(size < 0)
@@ -1486,7 +1502,7 @@ crc_parse(char const *arg)
    }
    else
    {
-      itc_printf("CRC-32 of %d bytes at 0x%x is 0x%x\r\n", len, start, 
+      itc_printf("CRC-32 of %d bytes at 0x%x is 0x%x\r\n", len, start,
                  update_crc(INITIAL_CRC32, (u8 *)start, len));
    }
 
@@ -1543,13 +1559,13 @@ updatece_parse(char const *arg)
 	 return 0;
       }
    }
-   
+
    do
       cebootme();
    while((size = tftplisten((u8 *)BL_TEMP_RAM)) < 0);
- 
+
    itc_printf("Flashing bin file: ");
-   
+
    return block_write_flash((u32 *)KERNEL_FLASH_START,
 		            (u32 *)BL_TEMP_RAM,
 			    size,
@@ -1584,7 +1600,7 @@ runce_parse(char const *arg)
    do
       cebootme();
    while(tftplisten((u8 *)BL_TEMP_RAM) < 0);
- 
+
    message_print(RAM_CLEAR_MESSAGE);
    memset32((u32 *)PLATFORM_MEMORY_BASE, 0, CE_CLEAR_SIZE / 4);
 
@@ -1615,7 +1631,7 @@ set_ip_parse(char const *arg)
    if(*arg != 0)
    {
       u32 iaddr;
-      
+
       if(cmpstr(arg, "dhcp"))
       {
 	 retval =  init_dhcp(&status.ciaddr,
@@ -1650,7 +1666,7 @@ set_ip_parse(char const *arg)
       }
    }
    itc_printf("IP address: %s\r\n", iptoa(status.ciaddr));
-   return retval;			   
+   return retval;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -1667,7 +1683,7 @@ set_mac_parse(char const *arg)
    int retval = 0;
    char answer;
    unsigned int num;
-   
+
    if(*arg != 0)
    {
       if(itc_strlen(arg) < 12 ||
@@ -1691,7 +1707,7 @@ set_mac_parse(char const *arg)
 	 {
 	    num = 0;
 	 }
-	 
+
          itc_printf("\
 CAUTION: Changing the MAC address can cause serious network problems.\r\n\
 Are you sure you want to continue? [y/n] ");
@@ -1704,7 +1720,7 @@ Are you sure you want to continue? [y/n] ");
             itc_printf("MAC address not changed\r\n");
             return 0;
          }
-      
+
 	 macaddr[0] = htons(macaddr[0]);
 	 macaddr[1] = htons(macaddr[1]);
 	 macaddr[2] = htons(macaddr[2]);
@@ -1721,7 +1737,7 @@ Are you sure you want to continue? [y/n] ");
    u16toa(htons(status.macaddr[2]), temp);
    itc_printf(temp);
    itc_printf("\r\n");
-   
+
    return retval;
 }
 

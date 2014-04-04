@@ -59,7 +59,7 @@ static struct card_info card_info[2];
 static struct ide_adapter ide_ad;
 static struct iohandle ioh;
 static struct vfat_filesystem vfat;
-static struct bootldr_status boot_status; 
+static struct bootldr_status boot_status;
 
 static int pcmcia_map_mem(u8 socket, size_t len, int cis, char **mapping)
 {
@@ -124,7 +124,7 @@ static int pcmcia_read_cis(int sock)
 		type = read_mapping_byte(mapping, i++);
 		len = read_mapping_byte(mapping, i++);
 		if(type == CIS_TUPLE_END || len == 0) {
-//			DEBUG0("end\r\n"); 
+//			DEBUG0("end\r\n");
 			break;
 		}
 		switch (type) {
@@ -178,10 +178,10 @@ static int pcmcia_detect(u8 *detect)
 }
 
 //====================================================================
-// IDE functions 
+// IDE functions
 //
 
-/* Byte-swap (in 2-byte chunks) from src to dest and 
+/* Byte-swap (in 2-byte chunks) from src to dest and
    len is in bytes and counts space for a trailing NUL
    to be added to the end of dest (and is thus odd)
    */
@@ -190,10 +190,10 @@ static void copy_ident_string(char *dest, const char *src, int len)
     int i;
 
     len--;
-    
+
     for (i=0;i<len;i+=2) {
         dest[i] = src[i+1];
-        dest[i+1] = src[i];	
+        dest[i+1] = src[i];
     }
 
     dest[len] = 0;
@@ -249,7 +249,7 @@ static int ide_read(char *buf, unsigned long offset, unsigned long len)
 {
 	struct drive_identification *id;
 	unsigned long sector_count;
-	unsigned long sector_number;	
+	unsigned long sector_number;
 	unsigned long start_sector;
 	unsigned long start_cylinder;
 	unsigned long start_head;
@@ -288,7 +288,7 @@ static int ide_read(char *buf, unsigned long offset, unsigned long len)
 			DEBUG0("  cyl low reg= %x\r\n", ide_ad.ioport[IDE_CYLINDER_LOW_REG]);
 			return -1;
 		}
-		for(i = 0; i < 512; i += ide_sector_buffer_stride) { 
+		for(i = 0; i < 512; i += ide_sector_buffer_stride) {
 			if(ide_sector_buffer_stride == 1)
 				buf[i] = ide_ad.ioport[IDE_SECTOR_BUF + i];
 			else
@@ -318,12 +318,12 @@ static int ide_read_ptable(struct dos_ptable_entry *ptable)
 	return 0;
 }
 
-static int ide_iohandle_read(struct iohandle *iohh, char *buf, size_t offset, size_t len) 
+static int ide_iohandle_read(struct iohandle *iohh, char *buf, size_t offset, size_t len)
 {
 	struct dos_ptable_entry *pentry;
 	unsigned long sector_size;
 	unsigned long start_sector;
-	
+
     pentry = (struct dos_ptable_entry *)iohh->pdata;
     sector_size = ide_ad.identification.n_bytes_per_sector;
     start_sector = pentry->starting_sector_lba;
@@ -348,14 +348,14 @@ struct iohandle *get_ide_partition_iohandle(u8 partid)
 	ioh.pdata = &ide_ad.ptable[partid];
 	ioh.sector_size = ide_ad.identification.n_bytes_per_sector;
 	return &ioh;
-} 
+}
 
 //====================================================================
 // VFAT functions
 //
 
 static void fixup_shortname(unsigned char *dst, unsigned char *dosname)
-{ 
+{
 	int i, j = 0;
 	int has_extension = 0;
 	int dot_pos = 0;
@@ -438,7 +438,7 @@ static int bpb_n_fats(struct bpb_info *info)
 
 static int bpb_bytes_per_sector(struct bpb_info *info)
 {
-	return (info->bytes_per_sector[1] << 8) + info->bytes_per_sector[0]; 
+	return (info->bytes_per_sector[1] << 8) + info->bytes_per_sector[0];
 }
 
 static int bpb_sectors_per_cluster(struct bpb_info *info)
@@ -453,7 +453,7 @@ static int bpb_n_reserved_sectors(struct bpb_info *info)
 
 static int bpb_n_root_entries(struct bpb_info *info)
 {
-	return (info->n_root_entries[1] << 8) + info->n_root_entries[0]; 
+	return (info->n_root_entries[1] << 8) + info->n_root_entries[0];
 }
 
 static int bpb_root_dir_sectors(struct bpb_info *info)
@@ -465,9 +465,9 @@ static int bpb_fat_size(struct bpb_info *info)
 {
 	int fat_size = 0;
 
-	if(info->fat_size16 != 0) 
+	if(info->fat_size16 != 0)
 		fat_size = info->fat_size16;
-	else 
+	else
 		fat_size = info->fat_size32;
 	return fat_size;
 }
@@ -484,14 +484,14 @@ static int bpb_total_sectors(struct bpb_info *info)
 
 	if(info->total_sectors16[0] || info->total_sectors16[1])
 		total_sectors = (info->total_sectors16[1] << 8) | info->total_sectors16[0];
-	else 
+	else
 		total_sectors = info->total_sectors32;
 	return total_sectors;
 }
 
 static int bpb_n_data_sectors(struct bpb_info *info)
 {
-	return bpb_total_sectors(info) - 
+	return bpb_total_sectors(info) -
 		(bpb_n_reserved_sectors(info)
 		 + (bpb_n_fats(info) * bpb_fat_size(info))
 		 + bpb_root_dir_sectors(info));
@@ -499,7 +499,7 @@ static int bpb_n_data_sectors(struct bpb_info *info)
 
 static int bpb_first_data_sector(struct bpb_info *info)
 {
-	return (bpb_n_reserved_sectors(info) 
+	return (bpb_n_reserved_sectors(info)
 		+ (bpb_n_fats(info) * bpb_fat_size(info))
 		+ bpb_root_dir_sectors(info));
 }
@@ -515,9 +515,9 @@ static enum fat_type bpb_fat_type(struct bpb_info *info)
 
 	if(n_clusters < 4085)
     	return ft_fat12;
-	else if(n_clusters < 65535) 
+	else if(n_clusters < 65535)
 		return ft_fat16;
-	else 
+	else
 		return ft_fat32;
 }
 
@@ -535,13 +535,13 @@ static u32 vfat_next_clusterno(struct vfat_filesystem *vfatt, u32 clusterno)
 
 	switch(vfatt->fat_type) {
 	case ft_fat16:
-		fat16 = (u16 *)vfatt->fat; 
+		fat16 = (u16 *)vfatt->fat;
 		entry = fat16[clusterno];
 		if(entry >= 0xFFF8)
-			entry = VFAT_EOC; 
-		break; 
+			entry = VFAT_EOC;
+		break;
 	case ft_fat32:
-		fat32 = (u32 *)vfatt->fat; 
+		fat32 = (u32 *)vfatt->fat;
 		entry = fat32[clusterno];
 		entry &= 0x00FFFFFF;
 		if(entry >= 0x00FFFFF8)
@@ -557,14 +557,14 @@ static u32 vfat_next_clusterno(struct vfat_filesystem *vfatt, u32 clusterno)
 		break;
     default:
         return 0;
-    }  
+    }
     return entry;
 }
 
 static int vfat_read_bpb_info(struct vfat_filesystem *vfatt, struct iohandle *iohh)
 {
 	/* read bpb_info from first sector of partition */
-	int rc = iohh->ops->read(iohh, vfatt->buf, 0, 512); 
+	int rc = iohh->ops->read(iohh, vfatt->buf, 0, 512);
 	if(!rc)
 		itc_memcpy((u8 *)&vfatt->info, vfatt->buf, sizeof(struct bpb_info));
 	return rc;
@@ -600,7 +600,7 @@ static int vfat_mount(struct vfat_filesystem *vfatt, struct iohandle *iohh)
 //		DEBUG0("  n_clusters= %x\r\n", bpb_n_clusters(info));
 //		DEBUG0("  fat_type= %x\r\n", bpb_fat_type(info));
 
-        /* gather data */ 
+        /* gather data */
         sector_size = bpb_bytes_per_sector(info);
         vfatt->sector_size = sector_size;
         vfatt->fat_type = bpb_fat_type(info);
@@ -609,7 +609,7 @@ static int vfat_mount(struct vfat_filesystem *vfatt, struct iohandle *iohh)
         vfatt->n_root_entries = bpb_n_root_entries(info);
         vfatt->root_dir_entries = (struct fat_dir_entry *)mem_buf;
         mem_buf += vfatt->n_root_entries * sizeof(struct fat_dir_entry);
-        { 
+        {
             int offset = 0;
             u32 start_byte = sector_size * bpb_first_root_dir_sector(info);
             u32 nbytes = vfatt->n_root_entries * sizeof(struct fat_dir_entry);
@@ -625,7 +625,7 @@ static int vfat_mount(struct vfat_filesystem *vfatt, struct iohandle *iohh)
         vfatt->fat_size = bpb_fat_size(info);
         vfatt->fat = mem_buf;
         mem_buf += sector_size * bpb_fat_size(info);
-        { 
+        {
             int offset = 0;
             u32 start_byte = sector_size * bpb_n_reserved_sectors(info);
             u32 nbytes = sector_size * bpb_fat_size(info);
@@ -712,7 +712,7 @@ static int vfat_read_clusters_offset(struct vfat_filesystem *vfatt, char *buf, u
 	u32 first_data_sector, sector_size, sector;
 	size_t bytes_read = 0, bytes_read_this_cluster;
 	int rc;
-	
+
 	info = &vfatt->info;
 	sectors_per_cluster = bpb_sectors_per_cluster(info);
 	bytes_per_sector = bpb_bytes_per_sector(info);
@@ -752,8 +752,8 @@ static int vfat_read_clusters_offset(struct vfat_filesystem *vfatt, char *buf, u
 	return bytes_read;
 }
 
-/* 
- * Reads nbytes of data from the named file into the provided buffer. 
+/*
+ * Reads nbytes of data from the named file into the provided buffer.
  *  If nbytes is 0, read whole file.
  */
 static int vfat_read_file(char *buf, const char *filename, size_t nbytes)
@@ -781,7 +781,7 @@ static int pcmcia_insert(int sock)//void)
 	int /*sock,*/ bytes, flag=0;
 	u8 detect=0;
 	char *mapping = 0;
-    
+
 	pcmcia_init();
 	udelay(10000);
 	pcmcia_detect(&detect);
@@ -800,18 +800,18 @@ static int pcmcia_insert(int sock)//void)
 
 	INTSTACLR &= (S0_RDY_INT | S1_RDY_INT | S0_CD_INT | S1_CD_INT);
 	delay(1);
-	pcmcia_read_cis(sock); 
+	pcmcia_read_cis(sock);
 	if(card_info[sock].funcid == CIS_FUNCID_FIXED) {
 		pcmcia_map_mem(sock, SZ_1M, 0, &mapping);
 		ide_attach((volatile char *)mapping);
 		udelay(10000);
 		ide_read_ptable(0);
 		udelay(10000);
-		bytes = vfat_read_file((char *)KERNEL_RAM_START, "kernel", 0);
+		bytes = vfat_read_file((char *)KERNEL_RAM_START, kname, 0);
 		if(bytes>0) {
 			boot_status.kernel_size = bytes;
 			boot_status.kernel_base = (unsigned char *)KERNEL_RAM_START;
-			DEBUG0("kernel has been downloaded to 0x%x, size=%d\r\n", 
+			DEBUG0("kernel has been downloaded to 0x%x, size=%d\r\n",
 				boot_status.kernel_base, boot_status.kernel_size);
 			flag |= 0x01;
 		}
@@ -819,7 +819,7 @@ static int pcmcia_insert(int sock)//void)
 		if(bytes>0) {
 			boot_status.ramdisk_size = bytes;
 			boot_status.ramdisk_base = (unsigned char *)RAMDISK_RAM_START;
-			DEBUG0("ramdisk.gz has been downloaded to 0x%x, size=%d\r\n", 
+			DEBUG0("ramdisk.gz has been downloaded to 0x%x, size=%d\r\n",
 				boot_status.ramdisk_base, boot_status.ramdisk_size);
 			flag |= 0x02;
 		}
@@ -853,7 +853,7 @@ static void pcmcia_eject(void)
 int pcmcia(int cmd)
 {
 	int i;
-	
+
 	if(cmd==1) {
 		i = pcmcia_insert(0);
 		if(i<=0)	{
@@ -869,7 +869,7 @@ int pcmcia(int cmd)
 		}
 		else
 			return 0;
-	}	
+	}
 	else if(cmd==0)
 		pcmcia_eject();
 	else

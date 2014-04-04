@@ -211,6 +211,7 @@ c_main(void)
    //   data structures are defined in src/include/pcmcia.h
    //   in src/libs/base/pcmcia.c, also defined some functions for IDE and VFAT
    //
+   itc_strcpy(kname, "kernel");
    if(pcmcia(1)==0) {
       // xatier: in src/libs/tools/parser.c
       // parse the kernel type and bootup address

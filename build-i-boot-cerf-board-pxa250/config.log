@@ -152,7 +152,7 @@ configure:4153: arm-linux-gcc -o conftest -O2 -mcpu=strongarm110 -mapcs-32 -fomi
 configure:4137: warning: function declaration isn't a prototype
 configure:4139: warning: function declaration isn't a prototype
 /toolchains/arm-linux/bin/ld: warning: cannot find entry symbol _start; defaulting to 00008074
-/tmp/ccaUgwY7.o(.text+0x4): In function `main':
+/tmp/ccyk58Wz.o(.text+0x4): In function `main':
 : undefined reference to `dlopen'
 collect2: ld returned 1 exit status
 configure: failed program was:
@@ -183,7 +183,7 @@ configure:4199: arm-linux-gcc -o conftest -O2 -mcpu=strongarm110 -mapcs-32 -fomi
 configure:4183: warning: function declaration isn't a prototype
 configure:4185: warning: function declaration isn't a prototype
 /toolchains/arm-linux/bin/ld: warning: cannot find entry symbol _start; defaulting to 00008074
-/tmp/cccUjbq9.o(.text+0x4): In function `main':
+/tmp/ccw8MpEB.o(.text+0x4): In function `main':
 : undefined reference to `shl_load'
 collect2: ld returned 1 exit status
 configure: failed program was:

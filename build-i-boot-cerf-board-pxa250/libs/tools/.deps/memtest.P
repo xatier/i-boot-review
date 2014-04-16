@@ -1,0 +1,14 @@
+memtest.o: /root/i-boot-review/src/libs/tools/memtest.c \
+ /root/i-boot-review/src/include/types.h \
+ /root/i-boot-review/src/include/memtest.h \
+ /root/i-boot-review/src/include/debug.h \
+ /root/i-boot-review/src/include/messages.h \
+ /root/i-boot-review/src/include/string.h \
+ /toolchains/lib/gcc-lib/arm-linux/2.95.3/include/stdarg.h
+/root/i-boot-review/src/libs/tools/memtest.c :
+/root/i-boot-review/src/include/types.h :
+/root/i-boot-review/src/include/memtest.h :
+/root/i-boot-review/src/include/debug.h :
+/root/i-boot-review/src/include/messages.h :
+/root/i-boot-review/src/include/string.h :
+/toolchains/lib/gcc-lib/arm-linux/2.95.3/include/stdarg.h :

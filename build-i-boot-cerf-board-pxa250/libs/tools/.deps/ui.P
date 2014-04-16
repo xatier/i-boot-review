@@ -1,0 +1,18 @@
+ui.o: /root/i-boot-review/src/libs/tools/ui.c \
+ /root/i-boot-review/src/include/serial.h \
+ /root/i-boot-review/src/include/types.h \
+ /root/i-boot-review/src/include/ui.h \
+ /root/i-boot-review/src/include/parser.h \
+ /root/i-boot-review/src/include/string.h \
+ /root/i-boot-review/src/include/util.h \
+ /root/i-boot-review/src/include/timer.h \
+ /root/i-boot-review/src/include/nvconfig.h
+/root/i-boot-review/src/libs/tools/ui.c :
+/root/i-boot-review/src/include/serial.h :
+/root/i-boot-review/src/include/types.h :
+/root/i-boot-review/src/include/ui.h :
+/root/i-boot-review/src/include/parser.h :
+/root/i-boot-review/src/include/string.h :
+/root/i-boot-review/src/include/util.h :
+/root/i-boot-review/src/include/timer.h :
+/root/i-boot-review/src/include/nvconfig.h :

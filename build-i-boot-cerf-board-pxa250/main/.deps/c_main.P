@@ -1,0 +1,40 @@
+c_main.o: /root/i-boot-review/src/main/c_main.c \
+ /root/i-boot-review/src/include/c_main.h \
+ /root/i-boot-review/src/include/types.h \
+ /root/i-boot-review/src/include/config.h \
+ /root/i-boot-review/src/include/dhcp.h \
+ /root/i-boot-review/src/include/serial.h \
+ /root/i-boot-review/src/include/flash_i128.h \
+ /root/i-boot-review/src/include/timer.h \
+ /root/i-boot-review/src/include/os.h \
+ /root/i-boot-review/src/include/ui.h \
+ /root/i-boot-review/src/include/parser.h \
+ /root/i-boot-review/src/include/arp.h \
+ /root/i-boot-review/src/include/ethernet.h \
+ /root/i-boot-review/src/include/string.h \
+ /root/i-boot-review/src/include/util.h \
+ /root/i-boot-review/src/include/checksum.h \
+ /root/i-boot-review/src/include/start_xscale.h \
+ /root/i-boot-review/src/include/i2c_boot.h \
+ /root/i-boot-review/src/include/eeprom_24lc64.h \
+ /root/i-boot-review/src/include/pcmcia.h
+/root/i-boot-review/src/main/c_main.c :
+/root/i-boot-review/src/include/c_main.h :
+/root/i-boot-review/src/include/types.h :
+/root/i-boot-review/src/include/config.h :
+/root/i-boot-review/src/include/dhcp.h :
+/root/i-boot-review/src/include/serial.h :
+/root/i-boot-review/src/include/flash_i128.h :
+/root/i-boot-review/src/include/timer.h :
+/root/i-boot-review/src/include/os.h :
+/root/i-boot-review/src/include/ui.h :
+/root/i-boot-review/src/include/parser.h :
+/root/i-boot-review/src/include/arp.h :
+/root/i-boot-review/src/include/ethernet.h :
+/root/i-boot-review/src/include/string.h :
+/root/i-boot-review/src/include/util.h :
+/root/i-boot-review/src/include/checksum.h :
+/root/i-boot-review/src/include/start_xscale.h :
+/root/i-boot-review/src/include/i2c_boot.h :
+/root/i-boot-review/src/include/eeprom_24lc64.h :
+/root/i-boot-review/src/include/pcmcia.h :

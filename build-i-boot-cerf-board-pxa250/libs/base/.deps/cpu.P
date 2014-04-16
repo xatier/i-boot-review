@@ -1,0 +1,8 @@
+cpu.o: /root/i-boot-review/src/libs/base/cpu.c \
+ /root/i-boot-review/src/include/types.h \
+ /root/i-boot-review/src/include/timer.h \
+ /root/i-boot-review/src/include/cpu.h
+/root/i-boot-review/src/libs/base/cpu.c :
+/root/i-boot-review/src/include/types.h :
+/root/i-boot-review/src/include/timer.h :
+/root/i-boot-review/src/include/cpu.h :

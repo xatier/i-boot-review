@@ -1,0 +1,24 @@
+cedecode.o: /root/i-boot-review/src/libs/tools/cedecode.c \
+ /root/i-boot-review/src/include/config.h \
+ /root/i-boot-review/src/include/cedecode.h \
+ /root/i-boot-review/src/include/types.h \
+ /root/i-boot-review/src/include/c_main.h \
+ /root/i-boot-review/src/include/dhcp.h \
+ /root/i-boot-review/src/include/util.h \
+ /root/i-boot-review/src/include/string.h \
+ /root/i-boot-review/src/include/platform.h \
+ /root/i-boot-review/src/include/debug.h \
+ /root/i-boot-review/src/include/messages.h \
+ /toolchains/lib/gcc-lib/arm-linux/2.95.3/include/stdarg.h
+/root/i-boot-review/src/libs/tools/cedecode.c :
+/root/i-boot-review/src/include/config.h :
+/root/i-boot-review/src/include/cedecode.h :
+/root/i-boot-review/src/include/types.h :
+/root/i-boot-review/src/include/c_main.h :
+/root/i-boot-review/src/include/dhcp.h :
+/root/i-boot-review/src/include/util.h :
+/root/i-boot-review/src/include/string.h :
+/root/i-boot-review/src/include/platform.h :
+/root/i-boot-review/src/include/debug.h :
+/root/i-boot-review/src/include/messages.h :
+/toolchains/lib/gcc-lib/arm-linux/2.95.3/include/stdarg.h :

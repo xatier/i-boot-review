@@ -1,0 +1,14 @@
+xmodem.o: /root/i-boot-review/src/libs/tools/xmodem.c \
+ /root/i-boot-review/src/include/serial.h \
+ /root/i-boot-review/src/include/types.h \
+ /root/i-boot-review/src/include/timer.h \
+ /root/i-boot-review/src/include/util.h \
+ /root/i-boot-review/src/include/crc16.h \
+ /root/i-boot-review/src/include/xmodem.h
+/root/i-boot-review/src/libs/tools/xmodem.c :
+/root/i-boot-review/src/include/serial.h :
+/root/i-boot-review/src/include/types.h :
+/root/i-boot-review/src/include/timer.h :
+/root/i-boot-review/src/include/util.h :
+/root/i-boot-review/src/include/crc16.h :
+/root/i-boot-review/src/include/xmodem.h :

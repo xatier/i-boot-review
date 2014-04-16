@@ -1,0 +1,68 @@
+parser.o: /root/i-boot-review/src/libs/tools/parser.c \
+ /root/i-boot-review/src/include/parser.h \
+ /root/i-boot-review/src/include/config.h \
+ /root/i-boot-review/src/include/serial.h \
+ /root/i-boot-review/src/include/types.h \
+ /root/i-boot-review/src/include/platform.h \
+ /root/i-boot-review/src/include/flash_i128.h \
+ /root/i-boot-review/src/include/c_main.h \
+ /root/i-boot-review/src/include/dhcp.h \
+ /root/i-boot-review/src/include/string.h \
+ /root/i-boot-review/src/include/cedecode.h \
+ /root/i-boot-review/src/include/cebootme.h \
+ /root/i-boot-review/src/include/tftp.h \
+ /root/i-boot-review/src/include/netapi.h \
+ /root/i-boot-review/src/include/params.h \
+ /root/i-boot-review/src/include/util.h \
+ /root/i-boot-review/src/include/ethernet.h \
+ /root/i-boot-review/src/include/memtest.h \
+ /root/i-boot-review/src/include/uudecode.h \
+ /root/i-boot-review/src/include/bootp.h \
+ /root/i-boot-review/src/include/help.h \
+ /root/i-boot-review/src/include/net.h \
+ /root/i-boot-review/src/include/os.h \
+ /root/i-boot-review/src/include/messages.h \
+ /root/i-boot-review/src/include/checksum.h \
+ /root/i-boot-review/src/include/timer.h \
+ /root/i-boot-review/src/include/xmodem.h \
+ /root/i-boot-review/src/include/icmp.h \
+ /root/i-boot-review/src/include/fis.h \
+ /root/i-boot-review/src/include/eeprom.h \
+ /root/i-boot-review/src/include/nvconfig.h \
+ /root/i-boot-review/src/include/idle.h \
+ /root/i-boot-review/src/include/cpu.h \
+ /root/i-boot-review/src/include/pcmcia.h
+/root/i-boot-review/src/libs/tools/parser.c :
+/root/i-boot-review/src/include/parser.h :
+/root/i-boot-review/src/include/config.h :
+/root/i-boot-review/src/include/serial.h :
+/root/i-boot-review/src/include/types.h :
+/root/i-boot-review/src/include/platform.h :
+/root/i-boot-review/src/include/flash_i128.h :
+/root/i-boot-review/src/include/c_main.h :
+/root/i-boot-review/src/include/dhcp.h :
+/root/i-boot-review/src/include/string.h :
+/root/i-boot-review/src/include/cedecode.h :
+/root/i-boot-review/src/include/cebootme.h :
+/root/i-boot-review/src/include/tftp.h :
+/root/i-boot-review/src/include/netapi.h :
+/root/i-boot-review/src/include/params.h :
+/root/i-boot-review/src/include/util.h :
+/root/i-boot-review/src/include/ethernet.h :
+/root/i-boot-review/src/include/memtest.h :
+/root/i-boot-review/src/include/uudecode.h :
+/root/i-boot-review/src/include/bootp.h :
+/root/i-boot-review/src/include/help.h :
+/root/i-boot-review/src/include/net.h :
+/root/i-boot-review/src/include/os.h :
+/root/i-boot-review/src/include/messages.h :
+/root/i-boot-review/src/include/checksum.h :
+/root/i-boot-review/src/include/timer.h :
+/root/i-boot-review/src/include/xmodem.h :
+/root/i-boot-review/src/include/icmp.h :
+/root/i-boot-review/src/include/fis.h :
+/root/i-boot-review/src/include/eeprom.h :
+/root/i-boot-review/src/include/nvconfig.h :
+/root/i-boot-review/src/include/idle.h :
+/root/i-boot-review/src/include/cpu.h :
+/root/i-boot-review/src/include/pcmcia.h :

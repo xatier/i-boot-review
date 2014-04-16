@@ -1,0 +1,18 @@
+pcmcia.o: /root/i-boot-review/src/libs/base/pcmcia.c \
+ /root/i-boot-review/src/include/c_main.h \
+ /root/i-boot-review/src/include/types.h \
+ /root/i-boot-review/src/include/config.h \
+ /root/i-boot-review/src/include/dhcp.h \
+ /root/i-boot-review/src/include/timer.h \
+ /root/i-boot-review/src/include/string.h \
+ /root/i-boot-review/src/include/util.h \
+ /root/i-boot-review/src/include/pcmcia.h
+/root/i-boot-review/src/libs/base/pcmcia.c :
+/root/i-boot-review/src/include/c_main.h :
+/root/i-boot-review/src/include/types.h :
+/root/i-boot-review/src/include/config.h :
+/root/i-boot-review/src/include/dhcp.h :
+/root/i-boot-review/src/include/timer.h :
+/root/i-boot-review/src/include/string.h :
+/root/i-boot-review/src/include/util.h :
+/root/i-boot-review/src/include/pcmcia.h :

@@ -1,0 +1,12 @@
+platform.o: /root/i-boot-review/src/libs/tools/platform.c \
+ /root/i-boot-review/src/include/types.h \
+ /root/i-boot-review/src/include/c_main.h \
+ /root/i-boot-review/src/include/config.h \
+ /root/i-boot-review/src/include/dhcp.h \
+ /root/i-boot-review/src/include/platform.h
+/root/i-boot-review/src/libs/tools/platform.c :
+/root/i-boot-review/src/include/types.h :
+/root/i-boot-review/src/include/c_main.h :
+/root/i-boot-review/src/include/config.h :
+/root/i-boot-review/src/include/dhcp.h :
+/root/i-boot-review/src/include/platform.h :

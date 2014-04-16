@@ -1,0 +1,20 @@
+idle.o: /root/i-boot-review/src/libs/base/idle.c \
+ /root/i-boot-review/src/include/ip.h \
+ /root/i-boot-review/src/include/types.h \
+ /root/i-boot-review/src/include/net.h \
+ /root/i-boot-review/src/include/udp.h \
+ /root/i-boot-review/src/include/icmp.h \
+ /root/i-boot-review/src/include/c_main.h \
+ /root/i-boot-review/src/include/config.h \
+ /root/i-boot-review/src/include/dhcp.h \
+ /root/i-boot-review/src/include/idle.h
+/root/i-boot-review/src/libs/base/idle.c :
+/root/i-boot-review/src/include/ip.h :
+/root/i-boot-review/src/include/types.h :
+/root/i-boot-review/src/include/net.h :
+/root/i-boot-review/src/include/udp.h :
+/root/i-boot-review/src/include/icmp.h :
+/root/i-boot-review/src/include/c_main.h :
+/root/i-boot-review/src/include/config.h :
+/root/i-boot-review/src/include/dhcp.h :
+/root/i-boot-review/src/include/idle.h :

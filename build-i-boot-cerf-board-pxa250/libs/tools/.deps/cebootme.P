@@ -1,0 +1,22 @@
+cebootme.o: /root/i-boot-review/src/libs/tools/cebootme.c \
+ /root/i-boot-review/src/include/cebootme.h \
+ /root/i-boot-review/src/include/c_main.h \
+ /root/i-boot-review/src/include/types.h \
+ /root/i-boot-review/src/include/config.h \
+ /root/i-boot-review/src/include/dhcp.h \
+ /root/i-boot-review/src/include/net.h \
+ /root/i-boot-review/src/include/udp.h \
+ /root/i-boot-review/src/include/arp.h \
+ /root/i-boot-review/src/include/util.h \
+ /root/i-boot-review/src/include/string.h
+/root/i-boot-review/src/libs/tools/cebootme.c :
+/root/i-boot-review/src/include/cebootme.h :
+/root/i-boot-review/src/include/c_main.h :
+/root/i-boot-review/src/include/types.h :
+/root/i-boot-review/src/include/config.h :
+/root/i-boot-review/src/include/dhcp.h :
+/root/i-boot-review/src/include/net.h :
+/root/i-boot-review/src/include/udp.h :
+/root/i-boot-review/src/include/arp.h :
+/root/i-boot-review/src/include/util.h :
+/root/i-boot-review/src/include/string.h :

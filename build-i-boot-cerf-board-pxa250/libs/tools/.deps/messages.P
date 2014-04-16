@@ -1,0 +1,10 @@
+messages.o: /root/i-boot-review/src/libs/tools/messages.c \
+ /root/i-boot-review/src/include/string.h \
+ /root/i-boot-review/src/include/types.h \
+ /root/i-boot-review/src/include/util.h \
+ /root/i-boot-review/src/include/messages.h
+/root/i-boot-review/src/libs/tools/messages.c :
+/root/i-boot-review/src/include/string.h :
+/root/i-boot-review/src/include/types.h :
+/root/i-boot-review/src/include/util.h :
+/root/i-boot-review/src/include/messages.h :

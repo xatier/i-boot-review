@@ -1,0 +1,29 @@
+ethernet_smsc91c111.o: \
+ /root/i-boot-review/src/libs/base/ethernet_smsc91c111.c \
+ /root/i-boot-review/src/include/string.h \
+ /root/i-boot-review/src/include/types.h \
+ /root/i-boot-review/src/include/ethernet_smsc91c111.h \
+ /root/i-boot-review/src/include/timer.h \
+ /root/i-boot-review/src/include/ethernet.h \
+ /root/i-boot-review/src/include/arp.h \
+ /root/i-boot-review/src/include/c_main.h \
+ /root/i-boot-review/src/include/config.h \
+ /root/i-boot-review/src/include/dhcp.h \
+ /root/i-boot-review/src/include/debug.h \
+ /root/i-boot-review/src/include/messages.h \
+ /toolchains/lib/gcc-lib/arm-linux/2.95.3/include/stdarg.h \
+ /root/i-boot-review/src/include/eeprom_24lc64.h
+/root/i-boot-review/src/libs/base/ethernet_smsc91c111.c :
+/root/i-boot-review/src/include/string.h :
+/root/i-boot-review/src/include/types.h :
+/root/i-boot-review/src/include/ethernet_smsc91c111.h :
+/root/i-boot-review/src/include/timer.h :
+/root/i-boot-review/src/include/ethernet.h :
+/root/i-boot-review/src/include/arp.h :
+/root/i-boot-review/src/include/c_main.h :
+/root/i-boot-review/src/include/config.h :
+/root/i-boot-review/src/include/dhcp.h :
+/root/i-boot-review/src/include/debug.h :
+/root/i-boot-review/src/include/messages.h :
+/toolchains/lib/gcc-lib/arm-linux/2.95.3/include/stdarg.h :
+/root/i-boot-review/src/include/eeprom_24lc64.h :

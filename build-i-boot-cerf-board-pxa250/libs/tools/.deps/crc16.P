@@ -1,0 +1,6 @@
+crc16.o: /root/i-boot-review/src/libs/tools/crc16.c \
+ /root/i-boot-review/src/include/crc16.h \
+ /root/i-boot-review/src/include/types.h
+/root/i-boot-review/src/libs/tools/crc16.c :
+/root/i-boot-review/src/include/crc16.h :
+/root/i-boot-review/src/include/types.h :

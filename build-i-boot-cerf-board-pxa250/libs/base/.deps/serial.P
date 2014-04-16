@@ -1,0 +1,12 @@
+serial.o: /root/i-boot-review/src/libs/base/serial.c \
+ /root/i-boot-review/src/include/serial.h \
+ /root/i-boot-review/src/include/types.h \
+ /root/i-boot-review/src/include/string.h \
+ /root/i-boot-review/src/include/timer.h \
+ /root/i-boot-review/src/include/idle.h
+/root/i-boot-review/src/libs/base/serial.c :
+/root/i-boot-review/src/include/serial.h :
+/root/i-boot-review/src/include/types.h :
+/root/i-boot-review/src/include/string.h :
+/root/i-boot-review/src/include/timer.h :
+/root/i-boot-review/src/include/idle.h :

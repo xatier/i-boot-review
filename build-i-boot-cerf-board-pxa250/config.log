@@ -1,0 +1,250 @@
+This file contains any messages produced by compilers while
+running configure, to aid debugging if configure makes a mistake.
+
+configure:760: checking for a BSD compatible install
+configure:813: checking whether build environment is sane
+configure:870: checking whether make sets ${MAKE}
+configure:916: checking for working aclocal
+configure:929: checking for working autoconf
+configure:942: checking for working automake
+configure:955: checking for working autoheader
+configure:968: checking for working makeinfo
+configure:993: checking for gcc
+configure:1106: checking whether the C compiler (arm-linux-gcc -O2 -mcpu=strongarm110 -mapcs-32 -fomit-frame-pointer -fPIC -fno-builtin -Wall -Wshadow -Wpointer-arith -Wwrite-strings -Wstrict-prototypes -Wmissing-declarations -Wmissing-prototypes -Wredundant-decls -Wnested-externs -Winline  -L/root/intrinsyc/lib -nostdlib -fPIC -fno-builtin -fomit-frame-pointer -static ) works
+configure:1122: arm-linux-gcc -o conftest -O2 -mcpu=strongarm110 -mapcs-32 -fomit-frame-pointer -fPIC -fno-builtin -Wall -Wshadow -Wpointer-arith -Wwrite-strings -Wstrict-prototypes -Wmissing-declarations -Wmissing-prototypes -Wredundant-decls -Wnested-externs -Winline   -L/root/intrinsyc/lib -nostdlib -fPIC -fno-builtin -fomit-frame-pointer -static  conftest.c  1>&5
+configure:1119: warning: return-type defaults to `int'
+configure:1119: warning: function declaration isn't a prototype
+/toolchains/arm-linux/bin/ld: warning: cannot find entry symbol _start; defaulting to 00008074
+configure:1148: checking whether the C compiler (arm-linux-gcc -O2 -mcpu=strongarm110 -mapcs-32 -fomit-frame-pointer -fPIC -fno-builtin -Wall -Wshadow -Wpointer-arith -Wwrite-strings -Wstrict-prototypes -Wmissing-declarations -Wmissing-prototypes -Wredundant-decls -Wnested-externs -Winline  -L/root/intrinsyc/lib -nostdlib -fPIC -fno-builtin -fomit-frame-pointer -static ) is a cross-compiler
+configure:1153: checking whether we are using GNU C
+configure:1162: arm-linux-gcc -E conftest.c
+configure:1181: checking whether arm-linux-gcc accepts -g
+configure:1215: checking for ranlib
+configure:1244: checking for Cygwin environment
+configure:1260: arm-linux-gcc -c -O2 -mcpu=strongarm110 -mapcs-32 -fomit-frame-pointer -fPIC -fno-builtin -Wall -Wshadow -Wpointer-arith -Wwrite-strings -Wstrict-prototypes -Wmissing-declarations -Wmissing-prototypes -Wredundant-decls -Wnested-externs -Winline   conftest.c 1>&5
+configure:1251: warning: function declaration isn't a prototype
+configure: In function `main':
+configure:1256: `__CYGWIN32__' undeclared (first use in this function)
+configure:1256: (Each undeclared identifier is reported only once
+configure:1256: for each function it appears in.)
+configure: failed program was:
+#line 1249 "configure"
+#include "confdefs.h"
+
+int main() {
+
+#ifndef __CYGWIN__
+#define __CYGWIN__ __CYGWIN32__
+#endif
+return __CYGWIN__;
+; return 0; }
+configure:1277: checking for mingw32 environment
+configure:1289: arm-linux-gcc -c -O2 -mcpu=strongarm110 -mapcs-32 -fomit-frame-pointer -fPIC -fno-builtin -Wall -Wshadow -Wpointer-arith -Wwrite-strings -Wstrict-prototypes -Wmissing-declarations -Wmissing-prototypes -Wredundant-decls -Wnested-externs -Winline   conftest.c 1>&5
+configure:1284: warning: function declaration isn't a prototype
+configure: In function `main':
+configure:1285: `__MINGW32__' undeclared (first use in this function)
+configure:1285: (Each undeclared identifier is reported only once
+configure:1285: for each function it appears in.)
+configure: failed program was:
+#line 1282 "configure"
+#include "confdefs.h"
+
+int main() {
+return __MINGW32__;
+; return 0; }
+configure:1306: checking how to run the C preprocessor
+configure:1327: arm-linux-gcc -E  conftest.c >/dev/null 2>conftest.out
+configure:1461: checking host system type
+configure:1482: checking build system type
+configure:1511: checking for ld used by GCC
+configure:1579: checking if the linker (/toolchains/arm-linux/bin/ld) is GNU ld
+GNU ld version 2.14 20030612
+configure:1596: checking for /toolchains/arm-linux/bin/ld option to reload object files
+configure:1608: checking for BSD-compatible nm
+configure:1646: checking whether ln -s works
+configure:1667: checking how to recognise dependant libraries
+configure:1840: checking for object suffix
+configure:1846: arm-linux-gcc -c -O2 -mcpu=strongarm110 -mapcs-32 -fomit-frame-pointer -fPIC -fno-builtin -Wall -Wshadow -Wpointer-arith -Wwrite-strings -Wstrict-prototypes -Wmissing-declarations -Wmissing-prototypes -Wredundant-decls -Wnested-externs -Winline   conftest.c 1>&5
+configure:1866: checking for executable suffix
+configure:1876: arm-linux-gcc -o conftest -O2 -mcpu=strongarm110 -mapcs-32 -fomit-frame-pointer -fPIC -fno-builtin -Wall -Wshadow -Wpointer-arith -Wwrite-strings -Wstrict-prototypes -Wmissing-declarations -Wmissing-prototypes -Wredundant-decls -Wnested-externs -Winline   -L/root/intrinsyc/lib -nostdlib -fPIC -fno-builtin -fomit-frame-pointer -static  conftest.c  1>&5
+conftest.c:1: warning: function declaration isn't a prototype
+/toolchains/arm-linux/bin/ld: warning: cannot find entry symbol _start; defaulting to 00008074
+configure:1907: checking command to parse /usr/bin/nm -B output
+configure:1983: arm-linux-gcc -c -O2 -mcpu=strongarm110 -mapcs-32 -fomit-frame-pointer -fPIC -fno-builtin -Wall -Wshadow -Wpointer-arith -Wwrite-strings -Wstrict-prototypes -Wmissing-declarations -Wmissing-prototypes -Wredundant-decls -Wnested-externs -Winline   conftest.c 1>&5
+conftest.c:5: warning: function declaration isn't a prototype
+conftest.c:9: warning: function declaration isn't a prototype
+configure:1986: /usr/bin/nm -B conftest.o | sed -n -e 's/^.*[ ]\([ABCDGISTW][ABCDGISTW]*\)[ ][ ]*\(\)\([_A-Za-z][_A-Za-z0-9]*\)$/\1 \2\3 \3/p' > conftest.nm
+configure:2037: arm-linux-gcc -o conftest -O2 -mcpu=strongarm110 -mapcs-32 -fomit-frame-pointer -fPIC -fno-builtin -Wall -Wshadow -Wpointer-arith -Wwrite-strings -Wstrict-prototypes -Wmissing-declarations -Wmissing-prototypes -Wredundant-decls -Wnested-externs -Winline   -L/root/intrinsyc/lib -nostdlib -fPIC -fno-builtin -fomit-frame-pointer -static  conftest.c conftstm.o 1>&5
+conftest.c:6: warning: `main' is usually a function
+/toolchains/arm-linux/bin/ld: warning: cannot find entry symbol _start; defaulting to 00008074
+configure:2083: checking for dlfcn.h
+configure:2093: arm-linux-gcc -E  conftest.c >/dev/null 2>conftest.out
+configure:2261: checking for ranlib
+configure:2328: checking for strip
+configure:2564: checking for objdir
+configure:2591: checking for arm-linux-gcc option to produce PIC
+configure:2743: checking if arm-linux-gcc PIC flag -fPIC works
+configure:2757: arm-linux-gcc -c -O2 -mcpu=strongarm110 -mapcs-32 -fomit-frame-pointer -fPIC -fno-builtin -Wall -Wshadow -Wpointer-arith -Wwrite-strings -Wstrict-prototypes -Wmissing-declarations -Wmissing-prototypes -Wredundant-decls -Wnested-externs -Winline  -fPIC -DPIC  conftest.c 1>&5
+configure:2752: warning: function declaration isn't a prototype
+configure:2809: checking if arm-linux-gcc static flag -static works
+configure:2824: arm-linux-gcc -o conftest -O2 -mcpu=strongarm110 -mapcs-32 -fomit-frame-pointer -fPIC -fno-builtin -Wall -Wshadow -Wpointer-arith -Wwrite-strings -Wstrict-prototypes -Wmissing-declarations -Wmissing-prototypes -Wredundant-decls -Wnested-externs -Winline   -L/root/intrinsyc/lib -nostdlib -fPIC -fno-builtin -fomit-frame-pointer -static  -static conftest.c  1>&5
+configure:2819: warning: function declaration isn't a prototype
+/toolchains/arm-linux/bin/ld: warning: cannot find entry symbol _start; defaulting to 00008074
+configure:2851: checking if arm-linux-gcc supports -c -o file.o
+configure:2870: arm-linux-gcc -c -O2 -mcpu=strongarm110 -mapcs-32 -fomit-frame-pointer -fPIC -fno-builtin -Wall -Wshadow -Wpointer-arith -Wwrite-strings -Wstrict-prototypes -Wmissing-declarations -Wmissing-prototypes -Wredundant-decls -Wnested-externs -Winline  -o out/conftest2.o  conftest.c 1>&5
+configure:2899: checking if arm-linux-gcc supports -c -o file.lo
+configure:2915: arm-linux-gcc -c -O2 -mcpu=strongarm110 -mapcs-32 -fomit-frame-pointer -fPIC -fno-builtin -Wall -Wshadow -Wpointer-arith -Wwrite-strings -Wstrict-prototypes -Wmissing-declarations -Wmissing-prototypes -Wredundant-decls -Wnested-externs -Winline  -c -o conftest.lo  conftest.c 1>&5
+configure:2910: warning: function declaration isn't a prototype
+configure: In function `main':
+configure:2911: warning: unused variable `some_variable'
+configure:2964: checking if arm-linux-gcc supports -fno-rtti -fno-exceptions
+configure:2977: arm-linux-gcc -c -O2 -mcpu=strongarm110 -mapcs-32 -fomit-frame-pointer -fPIC -fno-builtin -Wall -Wshadow -Wpointer-arith -Wwrite-strings -Wstrict-prototypes -Wmissing-declarations -Wmissing-prototypes -Wredundant-decls -Wnested-externs -Winline  -fno-rtti -fno-exceptions -c conftest.c  conftest.c 1>&5
+configure:2972: warning: function declaration isn't a prototype
+configure: In function `main':
+configure:2973: warning: unused variable `some_variable'
+configure:2972: warning: function declaration isn't a prototype
+configure: In function `main':
+configure:2973: warning: unused variable `some_variable'
+configure:3004: checking whether the linker (/toolchains/arm-linux/bin/ld) supports shared libraries
+configure:3620: checking how to hardcode library paths into programs
+configure:3648: checking whether stripping libraries is possible
+configure:3662: checking dynamic linker characteristics
+configure:4048: checking if libtool supports shared libraries
+configure:4087: checking for dlopen in -ldl
+configure:4106: arm-linux-gcc -o conftest -O2 -mcpu=strongarm110 -mapcs-32 -fomit-frame-pointer -fPIC -fno-builtin -Wall -Wshadow -Wpointer-arith -Wwrite-strings -Wstrict-prototypes -Wmissing-declarations -Wmissing-prototypes -Wredundant-decls -Wnested-externs -Winline   -L/root/intrinsyc/lib -nostdlib -fPIC -fno-builtin -fomit-frame-pointer -static  conftest.c -ldl   1>&5
+configure:4099: warning: function declaration isn't a prototype
+configure:4101: warning: function declaration isn't a prototype
+/toolchains/arm-linux/bin/ld: warning: cannot find entry symbol _start; defaulting to 00008074
+/toolchains/arm-linux/lib/libdl.a(dlopen.o)(.text+0x28): In function `dlopen_doit':
+/root/glibc-2.2.3/dlfcn/dlopen.c:39: undefined reference to `_dl_open'
+/toolchains/arm-linux/lib/libdl.a(dlerror.o)(.text+0x68): In function `dlerror':
+/root/glibc-2.2.3/dlfcn/dlerror.c:63: undefined reference to `strcmp'
+/toolchains/arm-linux/lib/libdl.a(dlerror.o)(.text+0x78):/root/glibc-2.2.3/dlfcn/dlerror.c:64: undefined reference to `free'
+/toolchains/arm-linux/lib/libdl.a(dlerror.o)(.text+0xb0):/root/glibc-2.2.3/dlfcn/dlerror.c:71: undefined reference to `__dcgettext'
+/toolchains/arm-linux/lib/libdl.a(dlerror.o)(.text+0xbc):/root/glibc-2.2.3/dlfcn/dlerror.c:71: undefined reference to `strerror'
+/toolchains/arm-linux/lib/libdl.a(dlerror.o)(.text+0xe4):/root/glibc-2.2.3/dlfcn/dlerror.c:71: undefined reference to `__asprintf'
+/toolchains/arm-linux/lib/libdl.a(dlerror.o)(.text+0xf8):/root/glibc-2.2.3/dlfcn/dlerror.c:76: undefined reference to `strcmp'
+/toolchains/arm-linux/lib/libdl.a(dlerror.o)(.text+0x108):/root/glibc-2.2.3/dlfcn/dlerror.c:77: undefined reference to `free'
+/toolchains/arm-linux/lib/libdl.a(dlerror.o)(.text+0x124):/root/glibc-2.2.3/dlfcn/dlerror.c:85: undefined reference to `_libc_intl_domainname'
+/toolchains/arm-linux/lib/libdl.a(dlerror.o)(.text+0x1d8): In function `_dlerror_run':
+/root/glibc-2.2.3/dlfcn/dlerror.c:108: undefined reference to `calloc'
+/toolchains/arm-linux/lib/libdl.a(dlerror.o)(.text+0x218):/root/glibc-2.2.3/dlfcn/dlerror.c:125: undefined reference to `strcmp'
+/toolchains/arm-linux/lib/libdl.a(dlerror.o)(.text+0x228):/root/glibc-2.2.3/dlfcn/dlerror.c:126: undefined reference to `free'
+/toolchains/arm-linux/lib/libdl.a(dlerror.o)(.text+0x244):/root/glibc-2.2.3/dlfcn/dlerror.c:130: undefined reference to `_dl_catch_error'
+/toolchains/arm-linux/lib/libdl.a(dlerror.o)(.text+0x304): In function `free_key_mem':
+/root/glibc-2.2.3/dlfcn/dlerror.c:159: undefined reference to `strcmp'
+/toolchains/arm-linux/lib/libdl.a(dlerror.o)(.text+0x314):/root/glibc-2.2.3/dlfcn/dlerror.c:160: undefined reference to `free'
+/toolchains/arm-linux/lib/libdl.a(dlerror.o)(.text+0x31c):/root/glibc-2.2.3/dlfcn/dlerror.c:162: undefined reference to `free'
+collect2: ld returned 1 exit status
+configure: failed program was:
+#line 4095 "configure"
+#include "confdefs.h"
+/* Override any gcc2 internal prototype to avoid an error.  */
+/* We use char because int might match the return type of a gcc2
+    builtin and then its argument prototype would still apply.  */
+char dlopen();
+
+int main() {
+dlopen()
+; return 0; }
+configure:4125: checking for dlopen
+configure:4153: arm-linux-gcc -o conftest -O2 -mcpu=strongarm110 -mapcs-32 -fomit-frame-pointer -fPIC -fno-builtin -Wall -Wshadow -Wpointer-arith -Wwrite-strings -Wstrict-prototypes -Wmissing-declarations -Wmissing-prototypes -Wredundant-decls -Wnested-externs -Winline   -L/root/intrinsyc/lib -nostdlib -fPIC -fno-builtin -fomit-frame-pointer -static  conftest.c  1>&5
+configure:4137: warning: function declaration isn't a prototype
+configure:4139: warning: function declaration isn't a prototype
+/toolchains/arm-linux/bin/ld: warning: cannot find entry symbol _start; defaulting to 00008074
+/tmp/ccaUgwY7.o(.text+0x4): In function `main':
+: undefined reference to `dlopen'
+collect2: ld returned 1 exit status
+configure: failed program was:
+#line 4130 "configure"
+#include "confdefs.h"
+/* System header to define __stub macros and hopefully few prototypes,
+    which can conflict with char dlopen(); below.  */
+#include <assert.h>
+/* Override any gcc2 internal prototype to avoid an error.  */
+/* We use char because int might match the return type of a gcc2
+    builtin and then its argument prototype would still apply.  */
+char dlopen();
+
+int main() {
+
+/* The GNU C library defines this for functions which it implements
+    to always fail with ENOSYS.  Some functions are actually named
+    something starting with __ and the normal name is an alias.  */
+#if defined (__stub_dlopen) || defined (__stub___dlopen)
+choke me
+#else
+dlopen();
+#endif
+
+; return 0; }
+configure:4171: checking for shl_load
+configure:4199: arm-linux-gcc -o conftest -O2 -mcpu=strongarm110 -mapcs-32 -fomit-frame-pointer -fPIC -fno-builtin -Wall -Wshadow -Wpointer-arith -Wwrite-strings -Wstrict-prototypes -Wmissing-declarations -Wmissing-prototypes -Wredundant-decls -Wnested-externs -Winline   -L/root/intrinsyc/lib -nostdlib -fPIC -fno-builtin -fomit-frame-pointer -static  conftest.c  1>&5
+configure:4183: warning: function declaration isn't a prototype
+configure:4185: warning: function declaration isn't a prototype
+/toolchains/arm-linux/bin/ld: warning: cannot find entry symbol _start; defaulting to 00008074
+/tmp/cccUjbq9.o(.text+0x4): In function `main':
+: undefined reference to `shl_load'
+collect2: ld returned 1 exit status
+configure: failed program was:
+#line 4176 "configure"
+#include "confdefs.h"
+/* System header to define __stub macros and hopefully few prototypes,
+    which can conflict with char shl_load(); below.  */
+#include <assert.h>
+/* Override any gcc2 internal prototype to avoid an error.  */
+/* We use char because int might match the return type of a gcc2
+    builtin and then its argument prototype would still apply.  */
+char shl_load();
+
+int main() {
+
+/* The GNU C library defines this for functions which it implements
+    to always fail with ENOSYS.  Some functions are actually named
+    something starting with __ and the normal name is an alias.  */
+#if defined (__stub_shl_load) || defined (__stub___shl_load)
+choke me
+#else
+shl_load();
+#endif
+
+; return 0; }
+configure:4217: checking for dlopen in -lsvld
+configure:4236: arm-linux-gcc -o conftest -O2 -mcpu=strongarm110 -mapcs-32 -fomit-frame-pointer -fPIC -fno-builtin -Wall -Wshadow -Wpointer-arith -Wwrite-strings -Wstrict-prototypes -Wmissing-declarations -Wmissing-prototypes -Wredundant-decls -Wnested-externs -Winline   -L/root/intrinsyc/lib -nostdlib -fPIC -fno-builtin -fomit-frame-pointer -static  conftest.c -lsvld   1>&5
+configure:4229: warning: function declaration isn't a prototype
+configure:4231: warning: function declaration isn't a prototype
+/toolchains/arm-linux/bin/ld: cannot find -lsvld
+collect2: ld returned 1 exit status
+configure: failed program was:
+#line 4225 "configure"
+#include "confdefs.h"
+/* Override any gcc2 internal prototype to avoid an error.  */
+/* We use char because int might match the return type of a gcc2
+    builtin and then its argument prototype would still apply.  */
+char dlopen();
+
+int main() {
+dlopen()
+; return 0; }
+configure:4255: checking for shl_load in -ldld
+configure:4274: arm-linux-gcc -o conftest -O2 -mcpu=strongarm110 -mapcs-32 -fomit-frame-pointer -fPIC -fno-builtin -Wall -Wshadow -Wpointer-arith -Wwrite-strings -Wstrict-prototypes -Wmissing-declarations -Wmissing-prototypes -Wredundant-decls -Wnested-externs -Winline   -L/root/intrinsyc/lib -nostdlib -fPIC -fno-builtin -fomit-frame-pointer -static  conftest.c -ldld   1>&5
+configure:4267: warning: function declaration isn't a prototype
+configure:4269: warning: function declaration isn't a prototype
+/toolchains/arm-linux/bin/ld: cannot find -ldld
+collect2: ld returned 1 exit status
+configure: failed program was:
+#line 4263 "configure"
+#include "confdefs.h"
+/* Override any gcc2 internal prototype to avoid an error.  */
+/* We use char because int might match the return type of a gcc2
+    builtin and then its argument prototype would still apply.  */
+char shl_load();
+
+int main() {
+shl_load()
+; return 0; }
+configure:4541: checking whether -lc should be explicitly linked in
+configure:4548: arm-linux-gcc -c -O2 -mcpu=strongarm110 -mapcs-32 -fomit-frame-pointer -fPIC -fno-builtin -Wall -Wshadow -Wpointer-arith -Wwrite-strings -Wstrict-prototypes -Wmissing-declarations -Wmissing-prototypes -Wredundant-decls -Wnested-externs -Winline   conftest.c 1>&5
+conftest.c:1: warning: `dummy' defined but not used
+configure:4561: arm-linux-gcc -shared conftest.o  -v -Wl,-soname -Wl,conftest -o conftest 2>&1 | grep  -lc  >/dev/null 2>&1
+configure:5143: checking for arm-linux-objcopy

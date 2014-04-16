@@ -1,0 +1,10 @@
+i2c_xscale.o: /root/i-boot-review/src/libs/base/i2c_xscale.c \
+ /root/i-boot-review/src/include/types.h \
+ /root/i-boot-review/src/include/timer.h \
+ /root/i-boot-review/src/include/i2c_xscale.h \
+ /root/i-boot-review/src/include/i2c_boot.h
+/root/i-boot-review/src/libs/base/i2c_xscale.c :
+/root/i-boot-review/src/include/types.h :
+/root/i-boot-review/src/include/timer.h :
+/root/i-boot-review/src/include/i2c_xscale.h :
+/root/i-boot-review/src/include/i2c_boot.h :

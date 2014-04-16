@@ -1,0 +1,28 @@
+os.o: /root/i-boot-review/src/libs/base/os.c \
+ /root/i-boot-review/src/include/c_main.h \
+ /root/i-boot-review/src/include/types.h \
+ /root/i-boot-review/src/include/config.h \
+ /root/i-boot-review/src/include/dhcp.h \
+ /root/i-boot-review/src/include/flash_i128.h \
+ /root/i-boot-review/src/include/util.h \
+ /root/i-boot-review/src/include/parser.h \
+ /root/i-boot-review/src/include/string.h \
+ /root/i-boot-review/src/include/cedecode.h \
+ /root/i-boot-review/src/include/platform.h \
+ /root/i-boot-review/src/include/os.h \
+ /root/i-boot-review/src/include/messages.h \
+ /root/i-boot-review/src/include/params.h
+/root/i-boot-review/src/libs/base/os.c :
+/root/i-boot-review/src/include/c_main.h :
+/root/i-boot-review/src/include/types.h :
+/root/i-boot-review/src/include/config.h :
+/root/i-boot-review/src/include/dhcp.h :
+/root/i-boot-review/src/include/flash_i128.h :
+/root/i-boot-review/src/include/util.h :
+/root/i-boot-review/src/include/parser.h :
+/root/i-boot-review/src/include/string.h :
+/root/i-boot-review/src/include/cedecode.h :
+/root/i-boot-review/src/include/platform.h :
+/root/i-boot-review/src/include/os.h :
+/root/i-boot-review/src/include/messages.h :
+/root/i-boot-review/src/include/params.h :

@@ -1,0 +1,12 @@
+string.o: /root/i-boot-review/src/libs/tools/string.c \
+ /toolchains/lib/gcc-lib/arm-linux/2.95.3/include/stdarg.h \
+ /root/i-boot-review/src/include/types.h \
+ /root/i-boot-review/src/include/serial.h \
+ /root/i-boot-review/src/include/util.h \
+ /root/i-boot-review/src/include/string.h
+/root/i-boot-review/src/libs/tools/string.c :
+/toolchains/lib/gcc-lib/arm-linux/2.95.3/include/stdarg.h :
+/root/i-boot-review/src/include/types.h :
+/root/i-boot-review/src/include/serial.h :
+/root/i-boot-review/src/include/util.h :
+/root/i-boot-review/src/include/string.h :

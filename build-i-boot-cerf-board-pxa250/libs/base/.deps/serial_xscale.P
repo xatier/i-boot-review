@@ -1,0 +1,10 @@
+serial_xscale.o: /root/i-boot-review/src/libs/base/serial_xscale.c \
+ /root/i-boot-review/src/include/types.h \
+ /root/i-boot-review/src/include/start_xscale.h \
+ /root/i-boot-review/src/include/config.h \
+ /root/i-boot-review/src/include/serial.h
+/root/i-boot-review/src/libs/base/serial_xscale.c :
+/root/i-boot-review/src/include/types.h :
+/root/i-boot-review/src/include/start_xscale.h :
+/root/i-boot-review/src/include/config.h :
+/root/i-boot-review/src/include/serial.h :

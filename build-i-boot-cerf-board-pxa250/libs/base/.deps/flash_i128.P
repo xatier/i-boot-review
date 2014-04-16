@@ -1,0 +1,22 @@
+flash_i128.o: /root/i-boot-review/src/libs/base/flash_i128.c \
+ /root/i-boot-review/src/include/flash_i128.h \
+ /root/i-boot-review/src/include/types.h \
+ /root/i-boot-review/src/include/config.h \
+ /root/i-boot-review/src/include/string.h \
+ /root/i-boot-review/src/include/c_main.h \
+ /root/i-boot-review/src/include/dhcp.h \
+ /root/i-boot-review/src/include/platform.h \
+ /root/i-boot-review/src/include/messages.h \
+ /root/i-boot-review/src/include/debug.h \
+ /toolchains/lib/gcc-lib/arm-linux/2.95.3/include/stdarg.h
+/root/i-boot-review/src/libs/base/flash_i128.c :
+/root/i-boot-review/src/include/flash_i128.h :
+/root/i-boot-review/src/include/types.h :
+/root/i-boot-review/src/include/config.h :
+/root/i-boot-review/src/include/string.h :
+/root/i-boot-review/src/include/c_main.h :
+/root/i-boot-review/src/include/dhcp.h :
+/root/i-boot-review/src/include/platform.h :
+/root/i-boot-review/src/include/messages.h :
+/root/i-boot-review/src/include/debug.h :
+/toolchains/lib/gcc-lib/arm-linux/2.95.3/include/stdarg.h :

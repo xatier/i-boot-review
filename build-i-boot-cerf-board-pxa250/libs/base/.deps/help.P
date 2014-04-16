@@ -1,0 +1,10 @@
+help.o: /root/i-boot-review/src/libs/base/help.c \
+ /root/i-boot-review/src/include/help.h \
+ /root/i-boot-review/src/include/parser.h \
+ /root/i-boot-review/src/include/string.h \
+ /root/i-boot-review/src/include/types.h
+/root/i-boot-review/src/libs/base/help.c :
+/root/i-boot-review/src/include/help.h :
+/root/i-boot-review/src/include/parser.h :
+/root/i-boot-review/src/include/string.h :
+/root/i-boot-review/src/include/types.h :

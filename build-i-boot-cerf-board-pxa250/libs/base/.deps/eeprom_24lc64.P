@@ -1,0 +1,16 @@
+eeprom_24lc64.o: /root/i-boot-review/src/libs/base/eeprom_24lc64.c \
+ /root/i-boot-review/src/include/types.h \
+ /root/i-boot-review/src/include/timer.h \
+ /root/i-boot-review/src/include/i2c_boot.h \
+ /root/i-boot-review/src/include/i2c_xscale.h \
+ /root/i-boot-review/src/include/eeprom_24lc64.h \
+ /root/i-boot-review/src/include/eeprom.h \
+ /root/i-boot-review/src/include/string.h
+/root/i-boot-review/src/libs/base/eeprom_24lc64.c :
+/root/i-boot-review/src/include/types.h :
+/root/i-boot-review/src/include/timer.h :
+/root/i-boot-review/src/include/i2c_boot.h :
+/root/i-boot-review/src/include/i2c_xscale.h :
+/root/i-boot-review/src/include/eeprom_24lc64.h :
+/root/i-boot-review/src/include/eeprom.h :
+/root/i-boot-review/src/include/string.h :

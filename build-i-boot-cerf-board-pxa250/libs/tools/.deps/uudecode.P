@@ -1,0 +1,8 @@
+uudecode.o: /root/i-boot-review/src/libs/tools/uudecode.c \
+ /root/i-boot-review/src/include/types.h \
+ /root/i-boot-review/src/include/serial.h \
+ /root/i-boot-review/src/include/uudecode.h
+/root/i-boot-review/src/libs/tools/uudecode.c :
+/root/i-boot-review/src/include/types.h :
+/root/i-boot-review/src/include/serial.h :
+/root/i-boot-review/src/include/uudecode.h :

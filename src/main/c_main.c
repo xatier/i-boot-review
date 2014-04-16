@@ -146,7 +146,7 @@ c_main(void)
 
    // xatier: in src/libs/net/checksum.c
    // actually do noting, use a static table crc32_tab[] instead
-   init_crc_table();
+   //init_crc_table();
 
    // xatier: in src/libs/base/timer_sa.c
    // set RCNR to zero

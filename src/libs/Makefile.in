@@ -81,7 +81,7 @@ RANLIB = @RANLIB@
 STRIP = @STRIP@
 VERSION = @VERSION@
 
-SUBDIRS = base net tools
+SUBDIRS = base tools
 
 AUTOMAKE_OPTIONS = foreign
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs

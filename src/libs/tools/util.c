@@ -321,6 +321,5 @@ void srand(unsigned int seed)
 int rand(void)
 {
     static const char static_rand = 0x55;
-    random = update_crc(random, &static_rand, sizeof(static_rand));
     return random & RAND_MAX;
 }

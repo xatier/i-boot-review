@@ -45,14 +45,5 @@ void idle(void)
     // Only poll for packets if our IP address is configured
     if (status.ciaddr)
     {
-        // Listen for and processes ARP and ICMP packets
-        if (iplisten_poll(packet, &size, 1))
-        {
-            // Whoops--someone is trying to talk to us.
-            // Notify the sender that we aren't interested right now.
-            icmpunreachable(packet + ETHER_HEADER_SIZE,
-                            size - ETHER_HEADER_SIZE,
-                            ICMP_PORT_UNREACH);
-        }
     }
 }

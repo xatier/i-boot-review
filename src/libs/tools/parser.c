@@ -61,11 +61,9 @@ int jump_parse(char const * arg);
 int copy_parse(char const * arg);
 int createfis_parse(char const * arg);
 int decode_parse(char const * arg);
-int download_parse(char const *arg);
 int eeclear_parse(char const * arg);
 int eedump_parse(char const * arg);
 int eraseflash_parse(char const * arg);
-int exec_parse(char const *);
 int flash_parse(char const *arg);
 int flashloader_parse(char const *arg);
 int flashverify_parse(char const * arg);
@@ -75,22 +73,17 @@ int getdword_parse(char const * arg);
 int help_parse(char const * arg);
 int info_parse(char const * arg);
 int memtest_parse(char const * arg);
-int ping_parse(char const * arg);
 int pcmcia_parse(char const * arg);
-int updatece_parse(char const * arg);
 int reboot_parse(char const * arg);
-int runce_parse(char const * arg);
 int setbyte_parse(char const * arg);
 int setword_parse(char const * arg);
 int setdword_parse(char const * arg);
 int set_parse(char const *arg);
-int set_ip_parse(char const *arg);
 int set_mac_parse(char const *arg);
 int set_server_parse(char const *arg);
 int set_speed_parse(char const *arg);
 int set_mask_parse(char const *arg);
 int set_gw_parse(char const *arg);
-int crc_parse(char const *arg);
 
 command_def command_set[] =
 {
@@ -100,16 +93,13 @@ command_def command_set[] =
    { "bootme",      bootme_parse,       0 },
    { "bootmem",     bootmem_parse,      2 },
    { "copy",        copy_parse,         3 },
-   { "crc",         crc_parse,          2 },
    { "createfis",   createfis_parse,    1 },
    { "decode",      decode_parse,       0 },
-   { "download",    download_parse,     2 },
 #ifdef TAGGED_EEPROM
    { "eeclear",     eeclear_parse,      0 },
    { "eedump",      eedump_parse,       0 },
 #endif // TAGGED_EEPROM
    { "eraseflash",  eraseflash_parse,   1 },
-   { "exec",        exec_parse,         1 },
    { "flash",       flash_parse,        3 },
    { "flashloader", flashloader_parse,  3 },
    { "flashverify", flashverify_parse,  3 },
@@ -120,21 +110,17 @@ command_def command_set[] =
    { "info",        info_parse,         0 },
    { "jump",        jump_parse,         1 },
    { "memtest",     memtest_parse,      2 },
-   { "ping",        ping_parse,         1 },
    { "pcmcia",		pcmcia_parse,		1 },
    { "reboot",      reboot_parse,       0 },
-   { "runce",       runce_parse,        0 },
    { "setbyte",     setbyte_parse,      2 },
    { "setword",     setword_parse,      2 },
    { "setdword",    setdword_parse,     2 },
    { "set",         set_parse,          0 },
    { "set gw",      set_gw_parse,       1 },
-   { "set ip",      set_ip_parse,       1 },
    { "set mac",     set_mac_parse,      1 },
    { "set mask",    set_mask_parse,     1 },
    { "set server",  set_server_parse,   1 },
    { "set speed",   set_speed_parse,    2 },
-   { "updatece",    updatece_parse,     0 },
 };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -334,185 +320,6 @@ static char const
    return (i ? next_token(arg) : (char *)0);
 }
 
-////////////////////////////////////////////////////////////////////////////////
-// download_parse:
-// PURPOSE: Parses a download command and executes appropriate download method.
-// PARAMS:  (IN) char *arg - argument(s) to the download command.
-// RETURNS: 1 for success, 0 for failure.
-////////////////////////////////////////////////////////////////////////////////
-int
-download_parse(char const *arg)
-{
-   enum
-   {
-      unknown,
-      tftp,
-      tftpd,
-      serial,
-      raw,
-      xmodem
-   } dl_type;
-
-   char *dest = 0;
-   char filename[MAX_FILENAME_SIZE];
-   u32 ip = 0;
-   int len;
-
-   if(cmpstr(arg, "tftp"))
-   {
-      dl_type = tftp;
-   }
-   else if(cmpstr(arg, "tftpd"))
-   {
-      dl_type = tftpd;
-   }
-   else if(cmpstr(arg, "serial"))
-   {
-      dl_type = serial;
-   }
-   else if(cmpstr(arg, "raw"))
-   {
-      dl_type = raw;
-   }
-   else if(cmpstr(arg, "xmodem"))
-   {
-      dl_type = xmodem;
-   }
-   else
-   {
-      dl_type = unknown;
-   }
-
-   arg = next_token(arg);
-
-   if(dl_type == tftp)
-   {
-      // Parse IP address if specified, otherwise use default server
-      if (*arg == ':')
-      {
-          if((ip = atoip(arg+1)))
-          {
-             status.siaddr = ip;
-             arg = next_token(arg);
-          }
-          else
-          {
-             error_print(PARSE_INVALID_IP_ERROR);
-             return 0;
-          }
-      }
-      if (status.siaddr == 0)
-      {
-         error_print(PARSE_INVALID_IP_ERROR);
-         return 0;
-      }
-
-      if(!(get_filename_parse(arg, filename, sizeof(filename))))
-      {
-         error_print(PARSE_INVALID_ARG_ERROR);
-         return 0;
-      }
-      arg = next_token(arg);
-   }
-
-   if(!(get_number_parse(arg, (u32 *)&dest)))
-   {
-      error_print(PARSE_INVALID_ARG_ERROR);
-      return 0;
-   }
-   arg = next_token(arg);
-
-   if((u32)dest < PLATFORM_MEMORY_BASE || (u32)dest > PLATFORM_MEMORY_MAX)
-   {
-      error_print(PARSE_RANGE_ERROR);
-      return 0;
-   }
-
-   switch(dl_type)
-   {
-      case raw:
-      {
-         if(!(get_number_parse(arg, (u32 *)&len)))
-         {
-            error_print(PARSE_INVALID_ARG_ERROR);
-            return 0;
-         }
-
-         if (!raw_input_serial(dest, len, 3600*100))
-         {
-	    itc_printf("Timeout in serial transfer\r\n");
-	    return 0;
-         }
-         break;
-      }
-      case serial:
-      {
-         len = uudecode(dest);
-         break;
-      }
-      case xmodem:
-      {
-         itc_printf("Start upload procedure using Xmodem-CRC Protocol.\r\n");
-         itc_printf("(Press ESC to cancel.)\r\n");
-
-         if (Xrecv(dest, (u32 *)&len))
-         {
-	    itc_printf("Error in XMODEM transfer\r\n");
-	    return 0;
-	 }
-         break;
-      }
-      case tftpd:
-      {
-	 if(status.ciaddr == 0)
-	 {
-	    u32 temp;
-	    message_print(PARSE_DHCP_MESSAGE);
-	    if(!init_dhcp(&status.ciaddr, &temp, &status.giaddr, &status.smask))
-	    {
-	       error_print(DHCP_TIMEOUT_ERROR);
-	       return 0;
-	    }
-	 }
-         do
-            cebootme();
-         while((len = tftplisten(dest)) < 0)
-                ;
-         break;
-      }
-      case tftp:
-      {
-         if(status.ciaddr == 0)
-	 {
-	    u32 temp;
-	    message_print(PARSE_DHCP_MESSAGE);
-	    if(!init_dhcp(&status.ciaddr, &temp, &status.giaddr, &status.smask))
-	    {
-	       error_print(DHCP_TIMEOUT_ERROR);
-	       return 0;
-	    }
-	 }
-         if((len = tftpget((char *)filename, dest)) < 0)
-	 {
-	    itc_printf("\r\n");
-            error_print(TFTP_TIMEOUT_ERROR);
-	    return 0;
-	 }
-         break;
-      }
-      default:
-      {
-         error_print(PARSE_DL_METHOD_ERROR);
-	 return 0;
-      }
-   }
-
-#ifdef SHOW_DOWNLOAD_CRC
-   itc_printf("CRC-32 of %d bytes is 0x%x\r\n",
-              len, update_crc(INITIAL_CRC32, dest, len));
-#endif
-   return 1;
-}
 
 ////////////////////////////////////////////////////////////////////////////////
 // flash_parse
@@ -1317,84 +1124,6 @@ setdword_parse(char const *arg)
    return 1;
 }
 
-////////////////////////////////////////////////////////////////////////////////
-// exec_parse
-// PURPOSE: Executes, and if necessary downloads, a script containing IBoot
-//          commands
-// PARAMS:  (IN) char *arg - argument string.
-// RETURNS: 1 for success, 0 for failure.
-////////////////////////////////////////////////////////////////////////////////
-int
-exec_parse(char const *arg)
-{
-   int size = 0;
-   char *curline;
-   char buf[MAX_SCRIPT_SIZE], filename[MAX_FILENAME_SIZE];
-   u32 addr;
-
-   /* see if address of script was specified */
-   if(!get_number_parse(arg, (u32 *)&curline))
-   {
-      /* see if IP address was given */
-      arg = next_token(arg);
-      curline = (char *)buf;
-
-      if (*arg == ':')
-      {
-         if(!(addr = atoip(arg)))
-         {
-            error_print(PARSE_INVALID_IP_ERROR);
-            return 0;
-         }
-         status.siaddr = addr;
-         arg = next_token(arg);
-      }
-      if (status.siaddr == 0)
-      {
-         error_print(PARSE_INVALID_IP_ERROR);
-         return 0;
-      }
-
-      if(!(get_filename_parse(arg, filename, sizeof(filename))))
-      {
-         error_print(PARSE_INVALID_ARG_ERROR);
-         return 0;
-      }
-
-      if(status.ciaddr == 0)
-      {
-	 u32 temp;
-	 message_print(PARSE_DHCP_MESSAGE);
-	 if(!init_dhcp(&status.ciaddr, &temp, &status.giaddr, &status.smask))
-	 {
-	    error_print(DHCP_TIMEOUT_ERROR);
-	    return 0;
-	 }
-      }
-
-      size = tftpget(arg, (u8 *)buf);
-
-      if(size < 0)
-      {
-	 itc_printf("\r\n");
-         error_print(TFTP_TIMEOUT_ERROR);
-         return 0;
-      }
-      if(size >= sizeof(buf))
-      {
-         /* The stack has been overwritten so it is unsafe to continue */
-	 itc_printf("\r\n");
-         error_print(PARSE_INVALID_ARG_ERROR);
-	 itc_printf("Halting.\r\n");
-
-	 /* endless loop */
-         for (;;);
-      }
-      buf[size] = 0;
-   }
-
-   return parse_script (curline) != mode_error;
-}
 
 ////////////////////////////////////////////////////////////////////////////////
 // copy_parse
@@ -1479,37 +1208,6 @@ memtest_parse(char const *arg)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// crc_parse
-// PURPOSE: Calculates CRC on a memory range.
-// PARAMS:  (IN) char *arg - argument string.
-// RETURNS: 1 for success, 0 for failure.
-////////////////////////////////////////////////////////////////////////////////
-int
-crc_parse(char const *arg)
-{
-   char const *temp;
-   u32 start, len;
-
-   if(!(temp = get_number_parse(arg, &start)))
-   {
-      error_print(PARSE_INVALID_ARG_ERROR);
-      return 0;
-   }
-   else if(!get_number_parse(temp, &len))
-   {
-      error_print(PARSE_INVALID_ARG_ERROR);
-      return 0;
-   }
-   else
-   {
-      itc_printf("CRC-32 of %d bytes at 0x%x is 0x%x\r\n", len, start,
-                 update_crc(INITIAL_CRC32, (u8 *)start, len));
-   }
-
-   return 1;
-}
-
-////////////////////////////////////////////////////////////////////////////////
 // bootme_parse
 // PURPOSE: Broadcasts a MS Platform Builder "bootme" message to announce our
 //          presence to any instances of such on the subnet.
@@ -1536,138 +1234,7 @@ help_parse(char const *arg)
    return 1;
 }
 
-////////////////////////////////////////////////////////////////////////////////
-// updatece_parse
-// PURPOSE: Parses an updatece command, downloads and flashes a CE .bin file.
-// PARAMS:  (IN) char *arg - argument string.
-// RETURNS: 1 for success, 0 for failure.
-////////////////////////////////////////////////////////////////////////////////
-int
-updatece_parse(char const *arg)
-{
-   int size = 0;
 
-   if(status.ciaddr == 0)
-   {
-      message_print(PARSE_DHCP_MESSAGE);
-      if(!init_dhcp(&status.ciaddr,
-	            &status.siaddr,
-		    &status.giaddr,
-		    &status.smask))
-      {
-	 error_print(DHCP_TIMEOUT_ERROR);
-	 return 0;
-      }
-   }
-
-   do
-      cebootme();
-   while((size = tftplisten((u8 *)BL_TEMP_RAM)) < 0);
-
-   itc_printf("Flashing bin file: ");
-
-   return block_write_flash((u32 *)KERNEL_FLASH_START,
-		            (u32 *)BL_TEMP_RAM,
-			    size,
-			    FLASH_DEFAULT);
-}
-
-////////////////////////////////////////////////////////////////////////////////
-// runce_parse
-// PURPOSE: Parses an updatece command, downloads, decodes, and boots a CE .bin
-//          file.
-// PARAMS:  (IN) char *arg - argument string.
-// RETURNS: 1 for success, 0 for failure.
-////////////////////////////////////////////////////////////////////////////////
-int
-runce_parse(char const *arg)
-{
-   void (*kernel)(void);
-
-   if(status.ciaddr == 0)
-   {
-      message_print(PARSE_DHCP_MESSAGE);
-      if(!init_dhcp(&status.ciaddr,
-	            &status.siaddr,
-		    &status.giaddr,
-		    &status.smask))
-      {
-	 error_print(DHCP_TIMEOUT_ERROR);
-	 return 0;
-      }
-   }
-
-   do
-      cebootme();
-   while(tftplisten((u8 *)BL_TEMP_RAM) < 0);
-
-   message_print(RAM_CLEAR_MESSAGE);
-   memset32((u32 *)PLATFORM_MEMORY_BASE, 0, CE_CLEAR_SIZE / 4);
-
-   message_print(LOADING_CE_MESSAGE);
-   kernel = (void (*)(void))cedecode((u8 *)CE_RAM_BASE,
-		                     (u8 *)BL_TEMP_RAM);
-
-   if((u32 *)kernel != NULL)
-   {
-      kernel();
-   }
-
-   return 0;
-}
-
-////////////////////////////////////////////////////////////////////////////////
-// set_ip_parse
-// PURPOSE: Parses a set ip command; sets the IP address of the board to either
-//          the value specified, or gets one via bootp or dhcp.
-// PARAMS:  (IN) char *arg - argument string.
-// RETURNS: 1 for success, 0 for failure.
-////////////////////////////////////////////////////////////////////////////////
-int
-set_ip_parse(char const *arg)
-{
-   int retval = 0;
-
-   if(*arg != 0)
-   {
-      u32 iaddr;
-
-      if(cmpstr(arg, "dhcp"))
-      {
-	 retval =  init_dhcp(&status.ciaddr,
-			     &status.siaddr,
-			     &status.giaddr,
-			     &status.smask);
-      }
-      else if(cmpstr(arg, "bootp"))
-      {
-	 retval =  init_bootp(&status.ciaddr,
-			      &status.siaddr,
-			      &status.giaddr,
-			      &status.smask);
-      }
-      else
-      {
-	 if(!(iaddr = atoip(arg)))
-	 {
-	    error_print(PARSE_INVALID_ARG_ERROR);
-	    return 0;
-	 }
-	 else
-	 {
-	    const u32 flags = FLAG_USE_STATICIP;
-	    status.ciaddr = iaddr;
-            (void) eeprom_write_item("FLAGS", sizeof("FLAGS")-1,
-                                     &flags, sizeof(flags));
-            (void) eeprom_write_item("SIP", sizeof("SIP")-1,
-                                     &status.ciaddr, sizeof(status.ciaddr));
-	    retval = 1;
-	 }
-      }
-   }
-   itc_printf("IP address: %s\r\n", iptoa(status.ciaddr));
-   return retval;
-}
 
 ////////////////////////////////////////////////////////////////////////////////
 // set_mac_parse
@@ -1827,45 +1394,6 @@ reboot_parse(char const *arg)
    return 1;    // Should never get here
 }
 
-////////////////////////////////////////////////////////////////////////////////
-// ping_parse
-// PURPOSE: Sends ICMP echo request to remote node.
-// PARAMS:  (IN) char *arg - argument string.
-// RETURNS: 1 for success, 0 for failure.
-////////////////////////////////////////////////////////////////////////////////
-int
-ping_parse(char const *arg)
-{
-   u32 iaddr;
-
-   if(!(iaddr = atoip(arg)))
-   {
-      error_print(PARSE_INVALID_IP_ERROR);
-      return 0;
-   }
-
-   if(status.ciaddr == 0)
-   {
-      message_print(PARSE_DHCP_MESSAGE);
-      if(!init_dhcp(&status.ciaddr,
-	            &status.siaddr,
-		    &status.giaddr,
-		    &status.smask))
-      {
-	 error_print(DHCP_TIMEOUT_ERROR);
-	 return 0;
-      }
-   }
-
-   itc_printf("Pinging %s\r\n", iptoa(iaddr));
-   icmpping(iaddr);
-
-   // Wait a moment for the response to come in so it doesn't mess up our
-   // output.
-   delay(1);
-
-   return 1;
-}
 
 //==========================================================
 // pcmcia_parse

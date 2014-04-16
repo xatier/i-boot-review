@@ -84,13 +84,5 @@ cebootme(void)
    data->tftpport = htons(CE_PB_PORT);
    data->srvport = 0;
 
-   udppacket((u16 *)packet,
-             sizeof(bootme),
-             IP_BROADCAST,
-             status.ciaddr,
-             CE_PB_PORT,
-             CE_PB_PORT,
-             status.macaddr);
-
    return 1;
 }

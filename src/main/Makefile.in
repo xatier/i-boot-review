@@ -95,7 +95,7 @@ i_boot_elf_SOURCES = $(CPU_SRC) c_main.c
 i_boot_elf_LDFLAGS = -Wl,-T,$(srcdir)/../ldscripts/$(LDSCRIPT)
 
 ##### Add additional libraries used here!
-i_boot_elf_LDADD = ../libs/tools/libtools.a ../libs/base/libbase.a ../libs/net/libnet.a -lgcc
+i_boot_elf_LDADD = ../libs/tools/libtools.a ../libs/base/libbase.a -lgcc
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
 CONFIG_CLEAN_FILES = 
 bin_PROGRAMS =  i_boot_elf$(EXEEXT)
@@ -110,7 +110,7 @@ LIBS = @LIBS@
 @XSCALE_TRUE@i_boot_elf_OBJECTS =  start_xscale.$(OBJEXT) \
 @XSCALE_TRUE@c_main.$(OBJEXT)
 i_boot_elf_DEPENDENCIES =  ../libs/tools/libtools.a \
-../libs/base/libbase.a ../libs/net/libnet.a
+../libs/base/libbase.a 
 SCRIPTS =  $(bin_SCRIPTS)
 
 CFLAGS = @CFLAGS@

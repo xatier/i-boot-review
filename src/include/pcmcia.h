@@ -165,6 +165,7 @@ struct ide_adapter {
 struct iohandle;
 struct iohandle_ops {
 	int (*read)(struct iohandle *ioh, char *buf, size_t offset, size_t len);
+	int (*write)(struct iohandle *ioh, char *buf, size_t offset, size_t len);
 	int (*close)(struct iohandle *ioh);
 	void *pdata; /* can point to filesystem or io device */
 };

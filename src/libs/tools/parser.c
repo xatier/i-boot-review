@@ -63,6 +63,7 @@ int createfis_parse(char const * arg);
 int decode_parse(char const * arg);
 int eeclear_parse(char const * arg);
 int eedump_parse(char const * arg);
+int encrypt_parse(char const * arg);
 int eraseflash_parse(char const * arg);
 int flash_parse(char const *arg);
 int flashloader_parse(char const *arg);
@@ -99,6 +100,7 @@ command_def command_set[] =
    { "eeclear",     eeclear_parse,      0 },
    { "eedump",      eedump_parse,       0 },
 #endif // TAGGED_EEPROM
+   { "encrypt",     encrypt_parse,      1 },
    { "eraseflash",  eraseflash_parse,   1 },
    { "flash",       flash_parse,        3 },
    { "flashloader", flashloader_parse,  3 },
@@ -1535,3 +1537,10 @@ eedump_parse(char const *arg)
     return 0;
 }
 #endif // TAGGED_EEPROM
+
+int
+encrypt_parse(char const *arg)
+{
+    pcmcia_encrypt(arg);
+    return 1;
+}

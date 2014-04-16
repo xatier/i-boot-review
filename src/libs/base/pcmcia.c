@@ -177,6 +177,317 @@ static int pcmcia_detect(u8 *detect)
 	return 0;
 }
 
+
+//=====
+/* ADD function ide_write */
+int ide_write(char *buf, unsigned long offset, unsigned long len)
+{
+  struct drive_identification *id;
+  
+  if (!ide_ad.identification.n_bytes_per_sector) {
+    return -1;
+  } else {
+//    id = &ide_ad.identification;
+    
+    unsigned long sector_count = len / ide_ad.identification.n_bytes_per_sector;
+    unsigned long sector_number = offset / ide_ad.identification.n_bytes_per_sector;
+    unsigned long start_sector = sector_number & 0xff;
+    unsigned long start_cylinder = (sector_number >> 8) &0xffff ;
+    unsigned long start_head = (sector_number >> 24) & 0x7 ;
+    u8 c;
+    int i;
+
+    ide_ad.ioport[IDE_SECTOR_NUMBER_REG] = start_sector;
+    ide_ad.ioport[IDE_CYLINDER_HIGH_REG] = (start_cylinder >> 8) & 0xff;
+    ide_ad.ioport[IDE_CYLINDER_LOW_REG] = start_cylinder & 0xff;
+    ide_ad.ioport[IDE_SECTOR_COUNT_REG] = sector_count & 0xff;
+    ide_ad.ioport[IDE_DRIVE_HEAD_REG] = DEVICE_HEAD_IS_LBA | (start_head & 0xf);
+    ide_ad.ioport[IDE_COMMAND_REG] = IDE_COMMAND_WRITE_SECTORS;
+    while (ide_ad.ioport[IDE_STATUS_REG] & IDE_STATUS_BSY) { 
+      /* wait for ready */
+    }
+    for (i = 0; i < 512; i += ide_sector_buffer_stride) { 
+      while (!(ide_ad.ioport[IDE_STATUS_REG] & IDE_STATUS_DRQ))
+	/* wait for DRQ */;
+      buf[i] = buf[i] ^ '1';
+
+      if (ide_sector_buffer_stride == 1) {
+        ide_ad.ioport[IDE_SECTOR_BUF + i] = buf[i];
+      }
+      else {
+        *(short*)&ide_ad.ioport[IDE_SECTOR_BUF + i] = *(short*)&buf[i];
+      }
+      while (ide_ad.ioport[IDE_STATUS_REG] & IDE_STATUS_BSY) { 
+	/* wait for ready */
+      }
+    }
+    c = ide_ad.ioport[IDE_STATUS_REG];
+    return 0;
+  }
+}
+
+/* ADD function ide_iohandle_write */
+static int ide_iohandle_write(struct iohandle *ioh, char *buf, size_t offset, size_t len)
+{
+   struct dos_ptable_entry *pentry = (struct dos_ptable_entry *)ioh->pdata;
+   unsigned long sector_size = ide_ad.identification.n_bytes_per_sector;
+   unsigned long start_sector = pentry->starting_sector_lba;
+   return ide_write(buf, offset + start_sector * sector_size, len);
+}
+
+/* ADD function vfat_set_next_clusterno */
+static void vfat_set_next_clusterno(struct vfat_filesystem *vfat, u32 clusterno, u32 newnext)
+{
+    enum fat_type ftype = vfat->fat_type;
+    switch (ftype) {
+    case ft_fat16: {
+        u16 *fat = (u16 *)vfat->fat; 
+	if (newnext == VFAT_EOC) 
+	  fat[clusterno] = 0xFFF8;
+	else 
+	  fat[clusterno] = newnext;
+    } break; 
+    case ft_fat32: {
+        u32 *fat = (u32 *)vfat->fat;
+	if (newnext == VFAT_EOC)
+	  fat[clusterno] = 0x00FFFFFF;
+	else
+	  fat[clusterno] = newnext;
+    } break;
+    case ft_fat12: {
+       u8 *fat = (u8 *)vfat->fat;
+       u16 tempentry;
+       memcpy(&tempentry, fat + (clusterno + clusterno / 2), sizeof(u16));
+       if (clusterno & 1) 
+          tempentry = (tempentry & 0xF) + (newnext << 4);
+       else
+	 tempentry = (tempentry & 0xF000) + newnext;
+       memcpy((u8 *) (fat + (clusterno + clusterno/2)), &tempentry, sizeof(u16));
+    } break;
+    default:
+    }  
+}
+
+/* ADD function vfat_count_free */
+/*
+ * returns the number of free clusters
+ */
+int vfat_count_free(struct vfat_filesystem *vfat)
+{
+  int i;
+  int ctr = 0; 
+  int n = bpb_n_clusters(&vfat->info);
+  for (i = 2; i < n; i++)
+    if (vfat_next_clusterno(vfat, i) == 0) ctr++;
+  return ctr;
+}
+
+/* ADD function vfat_write_fat */
+int vfat_write_fat(struct vfat_filesystem *vfat) {
+  int offset = 0;
+  int rc;
+  u32 start_byte = vfat->sector_size * bpb_n_reserved_sectors(&vfat->info);
+  u32 nbytes = vfat->sector_size * vfat->fat_size;
+  char *buf = (char *)vfat->fat;
+
+  for (offset = 0; offset < nbytes; offset += vfat->sector_size) {
+    rc = vfat->iohandle->ops->write(vfat->iohandle, buf+offset, start_byte+offset, vfat->sector_size);
+    if (rc)
+      return rc;
+  }
+  return 0;
+}
+
+/* ADD function vfat_free_clusters */
+static int vfat_free_clusters(struct vfat_filesystem *vfat, u32 first_clusterno, u8 write_fat)
+{
+  u32 clusterno;
+  while (first_clusterno != VFAT_EOC && first_clusterno != 0) {
+    clusterno = vfat_next_clusterno(vfat, first_clusterno);
+    vfat_set_next_clusterno(vfat, first_clusterno, 0);
+    first_clusterno = clusterno;
+  }
+  vfat_set_next_clusterno(vfat, first_clusterno, 0);
+  if (write_fat) vfat_write_fat(vfat);
+  return 0;
+}
+
+/* ADD function vfat_allocate_clusters */
+/* Allocates a cluster chain efficiently */
+static int vfat_allocate_clusters(struct vfat_filesystem *vfat, u32 parentcluster, struct fat_dir_entry *entry, size_t nbytes)
+{
+  struct bpb_info *info = &vfat->info;
+  u32 first_clusterno = fat_entry_first_clusterno(entry);
+  u32 n_clusters = bpb_n_clusters(info);
+  u32 sectors_per_cluster = bpb_sectors_per_cluster(info);
+  u32 bytes_per_sector = bpb_bytes_per_sector(info);
+  u32 bytes_per_cluster = bytes_per_sector * sectors_per_cluster;
+  u32 clusterno, next;
+  size_t bytes_seen = 0;
+
+  if (entry->n_bytes == nbytes) return first_clusterno;  /* already all allocated */
+  
+  if ((nbytes - 1) / bytes_per_cluster != (entry->n_bytes - 1) / bytes_per_cluster) {
+    if (first_clusterno) {
+      vfat_free_clusters(vfat, first_clusterno, 0);
+    }
+    if (vfat_count_free(vfat) < (nbytes + bytes_per_cluster - 1) / bytes_per_cluster) {
+//      putstr("Not enough free space on device.\r\n");
+      return -1;
+    }
+    first_clusterno = clusterno = 0;
+    if (nbytes > 0) {
+       /* go to the first data cluster */   
+       for (next = 3;
+	   next < n_clusters && bytes_seen <= nbytes;
+	   next++)
+	{
+	  if (vfat_next_clusterno(vfat, next) == 0) {
+
+	    if (first_clusterno == 0) {
+	      first_clusterno = clusterno = next;
+	      entry->first_cluster_high = first_clusterno >> 16;
+	      entry->first_cluster_low = first_clusterno & 0xFFFF;
+	    } else {
+	      vfat_set_next_clusterno(vfat, clusterno, next);
+	      clusterno = next;
+	    }
+	    bytes_seen += bytes_per_cluster;
+	  }
+	}
+      vfat_set_next_clusterno(vfat, clusterno, VFAT_EOC);
+    }
+    vfat_write_fat(vfat);
+  }
+
+  return first_clusterno;
+}
+
+/* ADD function vfat_write_clusters_offset */
+static int vfat_write_clusters_offset(struct vfat_filesystem *vfatt, char *buf, u32 clusterno, size_t nbytes, size_t offset)
+{
+	struct bpb_info *info;
+	u32 sectors_per_cluster, bytes_per_sector;
+	u32 bytes_per_cluster, sector_in_cluster;
+	u32 first_data_sector, sector_size, sector;
+	size_t bytes_read = 0, bytes_read_this_cluster;
+	int rc;
+	
+	info = &vfatt->info;
+	sectors_per_cluster = bpb_sectors_per_cluster(info);
+	bytes_per_sector = bpb_bytes_per_sector(info);
+	bytes_per_cluster = bytes_per_sector * sectors_per_cluster;
+	sector_in_cluster = offset / bytes_per_sector;
+	first_data_sector = bpb_first_data_sector(info);
+	sector_size = vfatt->sector_size;
+
+    if(nbytes == 0)
+    	return 0;
+	if(offset > bytes_per_cluster)
+		return -1;
+
+	while(clusterno != VFAT_EOC && bytes_read < nbytes) {
+		sector = first_data_sector + sectors_per_cluster * (clusterno - 2) + sector_in_cluster;
+		bytes_read_this_cluster = sector_in_cluster * bytes_per_sector;
+		while(bytes_read < nbytes && bytes_read_this_cluster < bytes_per_cluster) {
+//			DEBUG0("Reading sector = %x\r\n", sector);
+//			DEBUG0("Placing at = %x\r\n", (unsigned long)(buf + bytes_read));
+
+			rc = vfatt->iohandle->ops->write(vfatt->iohandle, buf+bytes_read, sector * sector_size, bytes_per_sector);
+			if (rc < 0) return rc;
+			bytes_read += bytes_per_sector;
+			if(bytes_read > nbytes) {
+				/* do not say we have more data than was asked for */
+				bytes_read = nbytes;
+			}
+			bytes_read_this_cluster += bytes_per_sector;
+			sector++;
+		}
+		clusterno = vfat_next_clusterno(vfatt, clusterno);
+		sector_in_cluster = 0;
+    }
+	if(clusterno == VFAT_EOC && bytes_read < nbytes) {
+		DEBUG0("reached VFAT_EOC at bytes_read= %x\r\n", bytes_read);
+	}
+	return bytes_read;
+}
+
+/* ADD function vfat_write_file */
+int vfat_write_file(char *buf, const char *filename, size_t nbytes)
+{
+
+    u32 first_clusterno;
+    int rc;
+    struct fat_dir_entry parent_storage;
+    struct fat_dir_entry *parent = &parent_storage;
+    struct fat_dir_entry entry_storage;
+    struct fat_dir_entry *entry = &entry_storage;
+
+    rc = vfat_find_file_entry(&vfat, parent, entry, filename);
+    if (rc) 
+      return rc;
+    if (nbytes == 0)
+      nbytes = entry->n_bytes;
+	first_clusterno = vfat_allocate_clusters(&vfat, 
+						   fat_entry_first_clusterno(parent), 
+						   entry, nbytes);
+    entry->n_bytes = vfat_write_clusters_offset(&vfat, buf, first_clusterno, nbytes, 0);
+
+    return entry->n_bytes;
+}
+
+/* ADD function pcmcia_encrypt */
+int pcmcia_encrypt(char const *infile)
+{
+	int /*sock,*/ bytes, flag=0;
+	u8 detect=0;
+	char *mapping = 0;
+	int sock=1;
+    
+	pcmcia_init();
+	udelay(10000);
+	pcmcia_detect(&detect);
+/*
+	if(detect & 0x01) {
+		sock = 0;
+	}
+	else if(detect & 0x02) {
+		sock = 1;
+	}
+	else
+		return -1;
+*/
+
+	if(!(detect & (sock+1))) {
+		DEBUG0("Can't find %s in socket 1\r\n", infile);
+		return -1;
+	}
+
+	INTSTACLR &= (S0_RDY_INT | S1_RDY_INT | S0_CD_INT | S1_CD_INT);
+	delay(1);
+	pcmcia_read_cis(sock); 
+
+	if(card_info[sock].funcid == CIS_FUNCID_FIXED) {
+		pcmcia_map_mem(sock, SZ_1M, 0, &mapping);
+		ide_attach((volatile char *)mapping);
+		udelay(10000);
+		ide_read_ptable(0);
+		udelay(10000);
+		bytes = vfat_read_file((char *)KERNEL_RAM_START, infile, 0);
+
+		if(bytes>0) {
+			DEBUG0("%s has been read, size=%d\r\n", infile, bytes);
+			
+			bytes = vfat_write_file((char *)KERNEL_RAM_START, infile, bytes);
+			DEBUG0("%s has been encrypted and saved, size=%d\r\n", infile, bytes);
+			flag |= 0x01;
+		}
+    }
+    return flag;//0;
+}
+
+//=====
+
 //====================================================================
 // IDE functions
 //
@@ -337,6 +648,7 @@ static int ide_iohandle_close(struct iohandle *iohh)
 
 static struct iohandle_ops ide_iohandle_ops = {
    read: ide_iohandle_read,
+   write: ide_iohandle_write,
    close: ide_iohandle_close
 };
 

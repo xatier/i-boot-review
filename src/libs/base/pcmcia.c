@@ -183,12 +183,12 @@ static int pcmcia_detect(u8 *detect)
 int ide_write(char *buf, unsigned long offset, unsigned long len)
 {
   struct drive_identification *id;
-  
+
   if (!ide_ad.identification.n_bytes_per_sector) {
     return -1;
   } else {
 //    id = &ide_ad.identification;
-    
+
     unsigned long sector_count = len / ide_ad.identification.n_bytes_per_sector;
     unsigned long sector_number = offset / ide_ad.identification.n_bytes_per_sector;
     unsigned long start_sector = sector_number & 0xff;
@@ -203,10 +203,10 @@ int ide_write(char *buf, unsigned long offset, unsigned long len)
     ide_ad.ioport[IDE_SECTOR_COUNT_REG] = sector_count & 0xff;
     ide_ad.ioport[IDE_DRIVE_HEAD_REG] = DEVICE_HEAD_IS_LBA | (start_head & 0xf);
     ide_ad.ioport[IDE_COMMAND_REG] = IDE_COMMAND_WRITE_SECTORS;
-    while (ide_ad.ioport[IDE_STATUS_REG] & IDE_STATUS_BSY) { 
+    while (ide_ad.ioport[IDE_STATUS_REG] & IDE_STATUS_BSY) {
       /* wait for ready */
     }
-    for (i = 0; i < 512; i += ide_sector_buffer_stride) { 
+    for (i = 0; i < 512; i += ide_sector_buffer_stride) {
       while (!(ide_ad.ioport[IDE_STATUS_REG] & IDE_STATUS_DRQ))
 	/* wait for DRQ */;
       buf[i] = buf[i] ^ '1';
@@ -217,7 +217,7 @@ int ide_write(char *buf, unsigned long offset, unsigned long len)
       else {
         *(short*)&ide_ad.ioport[IDE_SECTOR_BUF + i] = *(short*)&buf[i];
       }
-      while (ide_ad.ioport[IDE_STATUS_REG] & IDE_STATUS_BSY) { 
+      while (ide_ad.ioport[IDE_STATUS_REG] & IDE_STATUS_BSY) {
 	/* wait for ready */
       }
     }
@@ -241,12 +241,12 @@ static void vfat_set_next_clusterno(struct vfat_filesystem *vfat, u32 clusterno,
     enum fat_type ftype = vfat->fat_type;
     switch (ftype) {
     case ft_fat16: {
-        u16 *fat = (u16 *)vfat->fat; 
-	if (newnext == VFAT_EOC) 
+        u16 *fat = (u16 *)vfat->fat;
+	if (newnext == VFAT_EOC)
 	  fat[clusterno] = 0xFFF8;
-	else 
+	else
 	  fat[clusterno] = newnext;
-    } break; 
+    } break;
     case ft_fat32: {
         u32 *fat = (u32 *)vfat->fat;
 	if (newnext == VFAT_EOC)
@@ -258,14 +258,14 @@ static void vfat_set_next_clusterno(struct vfat_filesystem *vfat, u32 clusterno,
        u8 *fat = (u8 *)vfat->fat;
        u16 tempentry;
        memcpy(&tempentry, fat + (clusterno + clusterno / 2), sizeof(u16));
-       if (clusterno & 1) 
+       if (clusterno & 1)
           tempentry = (tempentry & 0xF) + (newnext << 4);
        else
 	 tempentry = (tempentry & 0xF000) + newnext;
        memcpy((u8 *) (fat + (clusterno + clusterno/2)), &tempentry, sizeof(u16));
     } break;
     default:
-    }  
+    }
 }
 
 /* ADD function vfat_count_free */
@@ -275,7 +275,7 @@ static void vfat_set_next_clusterno(struct vfat_filesystem *vfat, u32 clusterno,
 int vfat_count_free(struct vfat_filesystem *vfat)
 {
   int i;
-  int ctr = 0; 
+  int ctr = 0;
   int n = bpb_n_clusters(&vfat->info);
   for (i = 2; i < n; i++)
     if (vfat_next_clusterno(vfat, i) == 0) ctr++;
@@ -326,7 +326,7 @@ static int vfat_allocate_clusters(struct vfat_filesystem *vfat, u32 parentcluste
   size_t bytes_seen = 0;
 
   if (entry->n_bytes == nbytes) return first_clusterno;  /* already all allocated */
-  
+
   if ((nbytes - 1) / bytes_per_cluster != (entry->n_bytes - 1) / bytes_per_cluster) {
     if (first_clusterno) {
       vfat_free_clusters(vfat, first_clusterno, 0);
@@ -337,7 +337,7 @@ static int vfat_allocate_clusters(struct vfat_filesystem *vfat, u32 parentcluste
     }
     first_clusterno = clusterno = 0;
     if (nbytes > 0) {
-       /* go to the first data cluster */   
+       /* go to the first data cluster */
        for (next = 3;
 	   next < n_clusters && bytes_seen <= nbytes;
 	   next++)
@@ -372,7 +372,7 @@ static int vfat_write_clusters_offset(struct vfat_filesystem *vfatt, char *buf, 
 	u32 first_data_sector, sector_size, sector;
 	size_t bytes_read = 0, bytes_read_this_cluster;
 	int rc;
-	
+
 	info = &vfatt->info;
 	sectors_per_cluster = bpb_sectors_per_cluster(info);
 	bytes_per_sector = bpb_bytes_per_sector(info);
@@ -424,12 +424,12 @@ int vfat_write_file(char *buf, const char *filename, size_t nbytes)
     struct fat_dir_entry *entry = &entry_storage;
 
     rc = vfat_find_file_entry(&vfat, parent, entry, filename);
-    if (rc) 
+    if (rc)
       return rc;
     if (nbytes == 0)
       nbytes = entry->n_bytes;
-	first_clusterno = vfat_allocate_clusters(&vfat, 
-						   fat_entry_first_clusterno(parent), 
+	first_clusterno = vfat_allocate_clusters(&vfat,
+						   fat_entry_first_clusterno(parent),
 						   entry, nbytes);
     entry->n_bytes = vfat_write_clusters_offset(&vfat, buf, first_clusterno, nbytes, 0);
 
@@ -443,7 +443,7 @@ int pcmcia_encrypt(char const *infile)
 	u8 detect=0;
 	char *mapping = 0;
 	int sock=1;
-    
+
 	pcmcia_init();
 	udelay(10000);
 	pcmcia_detect(&detect);
@@ -465,7 +465,7 @@ int pcmcia_encrypt(char const *infile)
 
 	INTSTACLR &= (S0_RDY_INT | S1_RDY_INT | S0_CD_INT | S1_CD_INT);
 	delay(1);
-	pcmcia_read_cis(sock); 
+	pcmcia_read_cis(sock);
 
 	if(card_info[sock].funcid == CIS_FUNCID_FIXED) {
 		pcmcia_map_mem(sock, SZ_1M, 0, &mapping);
@@ -477,7 +477,7 @@ int pcmcia_encrypt(char const *infile)
 
 		if(bytes>0) {
 			DEBUG0("%s has been read, size=%d\r\n", infile, bytes);
-			
+
 			bytes = vfat_write_file((char *)KERNEL_RAM_START, infile, bytes);
 			DEBUG0("%s has been encrypted and saved, size=%d\r\n", infile, bytes);
 			flag |= 0x01;
@@ -1136,6 +1136,19 @@ static int pcmcia_insert(int sock)//void)
 			flag |= 0x02;
 		}
     }
+
+    // == lab 3.3 ===
+    // xatier: I guess this will work (?
+
+    char[] infile = "encrypted";
+    bytes = vfat_read_file((char *)KERNEL_RAM_START, infile, 0);
+
+    if (bytes>0) {
+        vfat_write_file((char *)KERNEL_RAM_START, infile, bytes);
+    }
+    // =====
+
+
     return flag;//0;
 }
 

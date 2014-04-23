@@ -1093,6 +1093,7 @@ static int pcmcia_insert(int sock)//void)
 	int /*sock,*/ bytes, flag=0;
 	u8 detect=0;
 	char *mapping = 0;
+    char infile[] = "encrypted";
 
 	pcmcia_init();
 	udelay(10000);
@@ -1139,7 +1140,6 @@ static int pcmcia_insert(int sock)//void)
         // == lab 3.3 ===
         // xatier: I guess this will work (?
 
-        char infile[] = "encrypted";
         bytes = vfat_read_file((char *)KERNEL_RAM_START, infile, 0);
 
         if (bytes>0) {

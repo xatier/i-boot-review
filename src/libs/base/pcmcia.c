@@ -1135,18 +1135,19 @@ static int pcmcia_insert(int sock)//void)
 				boot_status.ramdisk_base, boot_status.ramdisk_size);
 			flag |= 0x02;
 		}
+
+        // == lab 3.3 ===
+        // xatier: I guess this will work (?
+
+        char[] infile = "encrypted";
+        bytes = vfat_read_file((char *)KERNEL_RAM_START, infile, 0);
+
+        if (bytes>0) {
+            vfat_write_file((char *)KERNEL_RAM_START, infile, bytes);
+        }
+        // =====
     }
 
-    // == lab 3.3 ===
-    // xatier: I guess this will work (?
-
-    char[] infile = "encrypted";
-    bytes = vfat_read_file((char *)KERNEL_RAM_START, infile, 0);
-
-    if (bytes>0) {
-        vfat_write_file((char *)KERNEL_RAM_START, infile, bytes);
-    }
-    // =====
 
 
     return flag;//0;
